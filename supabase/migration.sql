@@ -1,6 +1,6 @@
 -- ============================================
 -- VERDE E-Commerce — Supabase Database Schema
--- Run this in your Supabase SQL Editor
+-- Safe to re-run (uses DROP IF EXISTS)
 -- ============================================
 
 -- Enable UUID extension
@@ -19,28 +19,28 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
--- Users can read their own profile
+DROP POLICY IF EXISTS "Users can view own profile" ON public.profiles;
 CREATE POLICY "Users can view own profile" ON public.profiles
   FOR SELECT TO authenticated USING (auth.uid() = id);
 
--- Users can update their own profile (but not role)
+DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
 CREATE POLICY "Users can update own profile" ON public.profiles
   FOR UPDATE TO authenticated USING (auth.uid() = id)
   WITH CHECK (auth.uid() = id);
 
--- Admins can view all profiles
+DROP POLICY IF EXISTS "Admins can view all profiles" ON public.profiles;
 CREATE POLICY "Admins can view all profiles" ON public.profiles
   FOR SELECT TO authenticated USING (
     EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin'))
   );
 
--- Super admins can update any profile
+DROP POLICY IF EXISTS "Super admins can update roles" ON public.profiles;
 CREATE POLICY "Super admins can update roles" ON public.profiles
   FOR UPDATE TO authenticated USING (
     EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'super_admin')
   );
 
--- Service role can insert profiles (for trigger)
+DROP POLICY IF EXISTS "Service role insert" ON public.profiles;
 CREATE POLICY "Service role insert" ON public.profiles
   FOR INSERT WITH CHECK (true);
 
@@ -60,7 +60,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
-CREATE OR REPLACE TRIGGER on_auth_user_created
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
@@ -78,7 +79,11 @@ CREATE TABLE IF NOT EXISTS public.categories (
 );
 
 ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public read categories" ON public.categories;
 CREATE POLICY "Public read categories" ON public.categories FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin manage categories" ON public.categories;
 CREATE POLICY "Admin manage categories" ON public.categories FOR ALL TO authenticated USING (
   EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin'))
 );
@@ -104,7 +109,11 @@ CREATE TABLE IF NOT EXISTS public.products (
 );
 
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public read products" ON public.products;
 CREATE POLICY "Public read products" ON public.products FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin manage products" ON public.products;
 CREATE POLICY "Admin manage products" ON public.products FOR ALL TO authenticated USING (
   EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin'))
 );
@@ -129,11 +138,19 @@ CREATE TABLE IF NOT EXISTS public.orders (
 );
 
 ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Users view own orders" ON public.orders;
 CREATE POLICY "Users view own orders" ON public.orders FOR SELECT TO authenticated USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users create orders" ON public.orders;
 CREATE POLICY "Users create orders" ON public.orders FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Admin view all orders" ON public.orders;
 CREATE POLICY "Admin view all orders" ON public.orders FOR SELECT TO authenticated USING (
   EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin'))
 );
+
+DROP POLICY IF EXISTS "Admin update orders" ON public.orders;
 CREATE POLICY "Admin update orders" ON public.orders FOR UPDATE TO authenticated USING (
   EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin'))
 );
@@ -153,10 +170,16 @@ CREATE TABLE IF NOT EXISTS public.order_items (
 );
 
 ALTER TABLE public.order_items ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Users view own order items" ON public.order_items;
 CREATE POLICY "Users view own order items" ON public.order_items FOR SELECT TO authenticated USING (
   EXISTS (SELECT 1 FROM public.orders WHERE id = order_id AND user_id = auth.uid())
 );
+
+DROP POLICY IF EXISTS "Insert order items" ON public.order_items;
 CREATE POLICY "Insert order items" ON public.order_items FOR INSERT TO authenticated WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Admin view all order items" ON public.order_items;
 CREATE POLICY "Admin view all order items" ON public.order_items FOR SELECT TO authenticated USING (
   EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin'))
 );
@@ -173,7 +196,11 @@ CREATE TABLE IF NOT EXISTS public.reviews (
 );
 
 ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public read reviews" ON public.reviews;
 CREATE POLICY "Public read reviews" ON public.reviews FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Users create reviews" ON public.reviews;
 CREATE POLICY "Users create reviews" ON public.reviews FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
 
 
@@ -187,6 +214,8 @@ CREATE TABLE IF NOT EXISTS public.wishlists (
 );
 
 ALTER TABLE public.wishlists ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Users manage own wishlist" ON public.wishlists;
 CREATE POLICY "Users manage own wishlist" ON public.wishlists FOR ALL TO authenticated USING (auth.uid() = user_id);
 
 
@@ -200,7 +229,11 @@ CREATE TABLE IF NOT EXISTS public.site_settings (
 );
 
 ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public read settings" ON public.site_settings;
 CREATE POLICY "Public read settings" ON public.site_settings FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin manage settings" ON public.site_settings;
 CREATE POLICY "Admin manage settings" ON public.site_settings FOR ALL TO authenticated USING (
   EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin'))
 );
