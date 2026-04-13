@@ -35,6 +35,10 @@ def get_supabase() -> Client:
 
 
 # ─── Health Check ───
+@app.get("/")
+def root():
+    return {"status": "ok", "service": "VERDE API", "version": "1.0.0", "docs": "/docs"}
+
 @app.get("/api")
 def health():
     return {"status": "ok", "service": "VERDE API", "version": "1.0.0"}
