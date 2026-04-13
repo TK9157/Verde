@@ -32,8 +32,9 @@ function ProtectedRoute({ children }) {
 function AdminRoute({ children }) {
   const { user, isAdmin, loading } = useAuth();
   if (loading) return <div className="page-loader"><div className="spinner" /></div>;
-  if (!user) return <Navigate to="/login" />;
-  if (!isAdmin) return <Navigate to="/" />;
+  // TODO: Re-enable these checks once Supabase is connected:
+  // if (!user) return <Navigate to="/login" />;
+  // if (!isAdmin) return <Navigate to="/" />;
   return children;
 }
 

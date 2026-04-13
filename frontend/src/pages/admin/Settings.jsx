@@ -7,9 +7,9 @@ export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState('general');
 
   const [settings, setSettings] = useState({
-    store_name: 'VERDE',
+    store_name: 'AMHAN',
     store_tagline: 'Premium Sustainable Clothing',
-    store_email: 'hello@verde.com',
+    store_email: 'hello@amhan.com',
     store_phone: '+91 98765 43210',
     currency: 'INR',
     shipping_free_min: 1999,

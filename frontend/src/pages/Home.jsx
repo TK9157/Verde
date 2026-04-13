@@ -54,7 +54,7 @@ export default function Home() {
 
             <motion.div className="hero-image" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}>
               <div className="hero-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=750&fit=crop" alt="Verde Fashion" />
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=750&fit=crop" alt="AMHAN Fashion" />
               </div>
               <motion.div className="hero-floating-card top-left" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -89,27 +89,62 @@ export default function Home() {
           </div>
           <div className="grid-3">
             {demoCategories.map((cat, i) => (
-              <motion.div key={cat.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: i * 0.15 }}>
-                <Link to={`/shop?category=${cat.slug}`} style={{ display: 'block' }}>
-                  <div style={{
-                    position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden',
-                    aspectRatio: '3/2', cursor: 'pointer'
-                  }}>
-                    <img src={cat.image_url} alt={cat.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }} />
+              <motion.div key={cat.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: i * 0.2, duration: 0.6 }}>
+                <Link to={`/shop?category=${cat.slug}`} style={{ display: 'block', textDecoration: 'none' }}>
+                  <motion.div
+                    whileHover={{ y: -8 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    style={{
+                      position: 'relative', borderRadius: 'var(--radius-xl)', overflow: 'hidden',
+                      aspectRatio: '3/2', cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                    }}
+                    className="category-card"
+                  >
+                    <motion.img
+                      src={cat.image_url} alt={cat.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.6, ease: 'easeOut' }}
+                    />
                     <div style={{
                       position: 'absolute', inset: 0,
-                      background: 'linear-gradient(transparent 40%, rgba(0,0,0,0.7))',
-                      display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '1.5rem'
-                    }}>
-                      <h3 style={{ color: 'white', fontSize: '1.5rem', marginBottom: '0.25rem' }}>{cat.name}</h3>
-                      <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.875rem' }}>{cat.description}</p>
+                      background: 'linear-gradient(transparent 30%, rgba(0,0,0,0.75))',
+                      display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '2rem',
+                      transition: 'background 0.4s ease'
+                    }} className="category-overlay">
+                      <motion.div initial={{ y: 10 }} whileInView={{ y: 0 }} transition={{ delay: i * 0.2 + 0.3 }}>
+                        <span style={{
+                          display: 'inline-block', padding: '0.25rem 0.75rem',
+                          background: 'var(--primary)', borderRadius: 'var(--radius-full)',
+                          fontSize: '0.6875rem', fontWeight: 700, color: 'white',
+                          textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem'
+                        }}>
+                          Explore
+                        </span>
+                        <h3 style={{ color: 'white', fontSize: '1.75rem', marginBottom: '0.375rem', fontFamily: 'var(--font-heading)' }}>{cat.name}</h3>
+                        <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9375rem' }}>{cat.description}</p>
+                        <div style={{
+                          display: 'flex', alignItems: 'center', gap: '0.375rem',
+                          marginTop: '0.75rem', color: 'var(--primary-lighter)',
+                          fontWeight: 600, fontSize: '0.875rem'
+                        }} className="category-cta">
+                          Shop Now <HiOutlineArrowRight />
+                        </div>
+                      </motion.div>
                     </div>
-                  </div>
+                  </motion.div>
                 </Link>
               </motion.div>
             ))}
           </div>
         </div>
+
+        <style>{`
+          .category-card:hover { box-shadow: 0 12px 40px rgba(22, 163, 74, 0.2) !important; }
+          .category-card:hover .category-overlay { background: linear-gradient(transparent 10%, rgba(0,0,0,0.8)) !important; }
+          .category-card .category-cta { opacity: 0; transform: translateY(8px); transition: all 0.3s ease; }
+          .category-card:hover .category-cta { opacity: 1; transform: translateY(0); }
+        `}</style>
       </section>
 
       {/* Featured Products */}

@@ -31,8 +31,8 @@ export default function AdminLayout() {
       {/* Sidebar */}
       <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="admin-logo">
-          <span className="logo-dot">V</span>
-          VERDE Admin
+          <span className="logo-dot">A</span>
+          AMHAN Admin
         </div>
 
         <nav>

@@ -13,9 +13,9 @@ export default function Footer() {
                 width: 32, height: 32, background: 'var(--primary)', borderRadius: 'var(--radius-sm)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white',
                 fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '0.875rem'
-              }}>V</span>
+              }}>A</span>
               <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--text-light)' }}>
-                VERDE
+                AMHAN
               </span>
             </Link>
             <p style={{ maxWidth: 300, marginBottom: '1.5rem' }}>
@@ -61,7 +61,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} VERDE. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} AMHAN. All rights reserved.</p>
           <div className="social-links">
             <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"><FaInstagram /></a>
             <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter"><FaTwitter /></a>

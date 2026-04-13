@@ -23,8 +23,8 @@ export default function Navbar() {
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} style={!scrolled ? { background: 'transparent' } : {}}>
         <div className="navbar-inner">
           <Link to="/" className="logo">
-            <span className="logo-icon">V</span>
-            VERDE
+            <span className="logo-icon">A</span>
+            AMHAN
           </Link>
 
           <div className="nav-links">

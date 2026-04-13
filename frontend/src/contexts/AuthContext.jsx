@@ -11,10 +11,17 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Set a timeout so loading never gets stuck
+    const timeout = setTimeout(() => setLoading(false), 3000);
+
     supabase.auth.getSession().then(({ data: { session } }) => {
+      clearTimeout(timeout);
       setUser(session?.user ?? null);
       if (session?.user) fetchProfile(session.user.id);
       else setLoading(false);
+    }).catch(() => {
+      clearTimeout(timeout);
+      setLoading(false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -26,7 +33,10 @@ export function AuthProvider({ children }) {
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      clearTimeout(timeout);
+      subscription.unsubscribe();
+    };
   }, []);
 
   async function fetchProfile(userId) {
@@ -62,9 +72,14 @@ export function AuthProvider({ children }) {
   }
 
   async function signInWithGoogle() {
+    // Get the correct redirect URL — use deployed URL in production, localhost:5173 in dev
+    const redirectUrl = window.location.hostname === 'localhost'
+      ? 'http://localhost:5173/'
+      : `${window.location.origin}/`;
+    
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin }
+      options: { redirectTo: redirectUrl }
     });
     if (error) throw error;
     return data;

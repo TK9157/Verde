@@ -43,11 +43,11 @@ export default function Register() {
       <div className="auth-left">
         <motion.div className="auth-form" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', marginBottom: '2rem' }}>
-            <span style={{ width: 32, height: 32, background: 'var(--primary)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '0.875rem' }}>V</span>
-            <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem' }}>VERDE</span>
+            <span style={{ width: 32, height: 32, background: 'var(--primary)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '0.875rem' }}>A</span>
+            <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem' }}>AMHAN</span>
           </Link>
           <h1>Create Account</h1>
-          <p className="subtitle">Join VERDE and explore sustainable fashion</p>
+          <p className="subtitle">Join AMHAN and explore sustainable fashion</p>
 
           <button className="google-btn" onClick={signInWithGoogle} type="button">
             <FcGoogle size={20} /> Continue with Google
