@@ -11,7 +11,7 @@ app = FastAPI(title="VERDE API", version="1.0.0")
 origins = [
     "http://localhost:5173",
     "http://localhost:3000",
-    os.getenv("FRONTEND_URL", "https://your-site.netlify.app"),
+    os.getenv("FRONTEND_URL", "https://amhan.netlify.app/"),
 ]
 
 app.add_middleware(
