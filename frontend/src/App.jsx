@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
+import { ProductsProvider } from './contexts/ProductsContext';
 
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
@@ -22,6 +24,7 @@ import AdminProducts from './pages/admin/Products';
 import AdminOrders from './pages/admin/Orders';
 import AdminManagement from './pages/admin/AdminManagement';
 import AdminSettings from './pages/admin/Settings';
+import AdminCategories from './pages/admin/Categories';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -29,12 +32,46 @@ function ProtectedRoute({ children }) {
   return user ? children : <Navigate to="/login" />;
 }
 
+// Admin password gate — hardcoded password for now
+const ADMIN_PASSWORD = 'amhan2026';
+
 function AdminRoute({ children }) {
-  const { user, isAdmin, loading } = useAuth();
-  if (loading) return <div className="page-loader"><div className="spinner" /></div>;
-  // TODO: Re-enable these checks once Supabase is connected:
-  // if (!user) return <Navigate to="/login" />;
-  // if (!isAdmin) return <Navigate to="/" />;
+  const [authenticated, setAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  if (!authenticated) {
+    return (
+      <div className="admin-gate">
+        <div className="admin-gate-box">
+          <h1>Admin Access</h1>
+          <p>Enter admin password to continue</p>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            if (password === ADMIN_PASSWORD) {
+              setAuthenticated(true);
+              setError('');
+            } else {
+              setError('Incorrect password');
+              setPassword('');
+            }
+          }}>
+            <input
+              type="password"
+              className="input-field"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoFocus
+            />
+            {error && <p style={{ color: 'var(--error)', fontSize: '0.8125rem', marginBottom: '0.75rem' }}>{error}</p>}
+            <button type="submit" className="btn btn-primary">Enter Admin Panel</button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return children;
 }
 
@@ -52,9 +89,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <ProductsProvider>
         <CartProvider>
           <Toaster position="bottom-right" toastOptions={{
-            style: { fontFamily: 'var(--font-body)', fontSize: '0.875rem' }
+            style: { fontFamily: 'var(--font-body)', fontSize: '0.8125rem', borderRadius: '4px', background: '#000', color: '#fff' }
           }} />
 
           <Routes>
@@ -62,13 +100,13 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* Admin panel — own layout */}
+            {/* Admin panel — own layout with password gate */}
             <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
               <Route index element={<Dashboard />} />
               <Route path="products" element={<AdminProducts />} />
               <Route path="orders" element={<AdminOrders />} />
               <Route path="customers" element={<Dashboard />} />
-              <Route path="categories" element={<Dashboard />} />
+              <Route path="categories" element={<AdminCategories />} />
               <Route path="admins" element={<AdminManagement />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
@@ -87,13 +125,14 @@ export default function App() {
             {/* Fallback */}
             <Route path="*" element={<CustomerLayout>
               <div style={{ paddingTop: 'calc(var(--navbar-height) + 4rem)', textAlign: 'center', minHeight: '60vh' }}>
-                <h1 style={{ fontSize: '4rem', color: 'var(--primary)' }}>404</h1>
+                <h1 style={{ fontSize: '6rem', color: 'var(--primary)' }}>404</h1>
                 <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Page not found</p>
                 <a href="/" className="btn btn-primary">Go Home</a>
               </div>
             </CustomerLayout>} />
           </Routes>
         </CartProvider>
+        </ProductsProvider>
       </AuthProvider>
     </BrowserRouter>
   );

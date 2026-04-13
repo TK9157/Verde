@@ -1,114 +1,118 @@
-// Demo product data — will be replaced with Supabase data when connected
+// Demo product data — Men's Fashion focused
 export const demoProducts = [
   {
-    id: '1', name: 'Classic Linen Shirt', slug: 'classic-linen-shirt',
-    description: 'A timeless linen shirt crafted from premium European linen. Perfect for warm days and effortless style.',
-    price: 2499, compare_price: 3999, category_id: 'men', category_name: 'Men',
-    images: ['https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&h=800&fit=crop'],
-    sizes: ['S', 'M', 'L', 'XL'], colors: ['White', 'Sage', 'Charcoal'],
+    id: '1', name: 'Washed Semi Fit Jean', slug: 'washed-semi-fit-jean',
+    description: 'Premium washed denim with a relaxed semi-fit cut. Comfortable stretch fabric designed for everyday street style.',
+    price: 1499, compare_price: 2499, category_id: 'oversized-jeans', category_name: 'Oversized Jeans',
+    images: ['https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&h=800&fit=crop'],
+    sizes: ['28', '30', '32', '34', '36'], colors: ['Light Wash', 'Dark Wash', 'Black'],
     tags: ['new', 'bestseller'], is_featured: true, is_active: true, stock_quantity: 50, rating: 4.5
   },
   {
-    id: '2', name: 'Organic Cotton Tee', slug: 'organic-cotton-tee',
-    description: 'Soft organic cotton t-shirt with a relaxed fit. Sustainably produced and incredibly comfortable.',
-    price: 1299, compare_price: 1799, category_id: 'men', category_name: 'Men',
-    images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=800&fit=crop'],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'], colors: ['Black', 'White', 'Forest Green'],
-    tags: ['bestseller'], is_featured: true, is_active: true, stock_quantity: 120, rating: 4.8
+    id: '2', name: 'High Rise Washed Jean', slug: 'high-rise-washed-jean',
+    description: 'High-rise oversized jeans with vintage washed finish. Relaxed through the thigh with a straight leg.',
+    price: 1499, compare_price: 2199, category_id: 'oversized-jeans', category_name: 'Oversized Jeans',
+    images: ['https://images.unsplash.com/photo-1604176354204-9268737828e4?w=600&h=800&fit=crop'],
+    sizes: ['28', '30', '32', '34'], colors: ['Blue Wash', 'Grey'],
+    tags: ['bestseller'], is_featured: true, is_active: true, stock_quantity: 80, rating: 4.8
   },
   {
-    id: '3', name: 'Floral Summer Dress', slug: 'floral-summer-dress',
-    description: 'A beautiful floral midi dress in a flowing silhouette. Made from lightweight recycled polyester.',
-    price: 3299, compare_price: 4999, category_id: 'women', category_name: 'Women',
-    images: ['https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600&h=800&fit=crop'],
-    sizes: ['XS', 'S', 'M', 'L'], colors: ['Green Floral', 'Blue Floral'],
+    id: '3', name: 'Metal Rivet OV Jean', slug: 'metal-rivet-ov-jean',
+    description: 'Statement oversized jeans with metal rivet detailing. Heavy-duty denim with a bold, edgy aesthetic.',
+    price: 2599, compare_price: 3999, category_id: 'oversized-jeans', category_name: 'Oversized Jeans',
+    images: ['https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=600&h=800&fit=crop'],
+    sizes: ['28', '30', '32', '34', '36'], colors: ['Indigo', 'Black'],
     tags: ['new', 'trending'], is_featured: true, is_active: true, stock_quantity: 35, rating: 4.7
   },
   {
-    id: '4', name: 'Tailored Wool Blazer', slug: 'tailored-wool-blazer',
-    description: 'Expertly tailored blazer in premium Italian wool blend. A modern power piece for any occasion.',
-    price: 7999, compare_price: 11999, category_id: 'men', category_name: 'Men',
-    images: ['https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&h=800&fit=crop'],
-    sizes: ['S', 'M', 'L', 'XL'], colors: ['Black', 'Navy', 'Forest'],
-    tags: ['premium'], is_featured: true, is_active: true, stock_quantity: 20, rating: 4.9
+    id: '4', name: 'Oversized Drop Shoulder Shirt', slug: 'oversized-drop-shoulder-shirt',
+    description: 'Relaxed oversized shirt with dropped shoulders. Premium cotton with a boxy, contemporary silhouette.',
+    price: 1299, compare_price: 1999, category_id: 'oversized-shirts', category_name: 'Oversized Shirts',
+    images: ['https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&h=800&fit=crop'],
+    sizes: ['S', 'M', 'L', 'XL'], colors: ['White', 'Black', 'Cream'],
+    tags: ['bestseller'], is_featured: true, is_active: true, stock_quantity: 120, rating: 4.6
   },
   {
-    id: '5', name: 'High-Waist Palazzo Pants', slug: 'high-waist-palazzo-pants',
-    description: 'Elegant palazzo pants with a flattering high-waist cut. Flowy, comfortable, and endlessly chic.',
-    price: 2799, compare_price: 3999, category_id: 'women', category_name: 'Women',
-    images: ['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=800&fit=crop'],
-    sizes: ['XS', 'S', 'M', 'L', 'XL'], colors: ['Black', 'Cream', 'Olive'],
-    tags: ['bestseller'], is_featured: true, is_active: true, stock_quantity: 65, rating: 4.6
-  },
-  {
-    id: '6', name: 'Minimalist Leather Watch', slug: 'minimalist-leather-watch',
-    description: 'A sleek leather strap watch with a clean dial design. Hand-stitched Italian leather band.',
-    price: 4999, compare_price: 6999, category_id: 'accessories', category_name: 'Accessories',
-    images: ['https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&h=800&fit=crop'],
-    sizes: ['One Size'], colors: ['Black', 'Brown', 'Green'],
-    tags: ['new', 'premium'], is_featured: true, is_active: true, stock_quantity: 15, rating: 4.9
-  },
-  {
-    id: '7', name: 'Cashmere Crew Sweater', slug: 'cashmere-crew-sweater',
-    description: 'Luxuriously soft cashmere sweater with a classic crew neck. Perfect for layering.',
-    price: 5499, compare_price: 7999, category_id: 'women', category_name: 'Women',
+    id: '5', name: 'Graphic Oversized Tee', slug: 'graphic-oversized-tee',
+    description: 'Bold graphic print on heavyweight oversized cotton tee. Street-ready design with premium quality fabric.',
+    price: 999, compare_price: 1599, category_id: 'oversized-tshirts', category_name: 'Oversized T-Shirts',
     images: ['https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=800&fit=crop'],
-    sizes: ['XS', 'S', 'M', 'L'], colors: ['Cream', 'Black', 'Sage'],
-    tags: ['premium', 'trending'], is_featured: false, is_active: true, stock_quantity: 28, rating: 4.8
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'], colors: ['Black', 'White', 'Navy'],
+    tags: ['new', 'trending'], is_featured: true, is_active: true, stock_quantity: 200, rating: 4.9
   },
   {
-    id: '8', name: 'Canvas Tote Bag', slug: 'canvas-tote-bag',
-    description: 'Durable canvas tote with leather details. Spacious interior with secure zip pocket.',
-    price: 1999, compare_price: 2999, category_id: 'accessories', category_name: 'Accessories',
-    images: ['https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&h=800&fit=crop'],
-    sizes: ['One Size'], colors: ['Natural', 'Black', 'Green'],
-    tags: ['bestseller'], is_featured: false, is_active: true, stock_quantity: 80, rating: 4.4
+    id: '6', name: 'Scratched Slim Fit Jean', slug: 'scratched-slim-fit-jean',
+    description: 'Slim-fit jeans with artisan scratched detailing. Stretch denim for comfort with a modern tapered cut.',
+    price: 1799, compare_price: 2799, category_id: 'regular-jeans', category_name: 'Regular Jeans',
+    images: ['https://images.unsplash.com/photo-1475178626620-a4d074967571?w=600&h=800&fit=crop'],
+    sizes: ['28', '30', '32', '34', '36'], colors: ['Medium Blue', 'Black', 'Dark Wash'],
+    tags: ['bestseller'], is_featured: true, is_active: true, stock_quantity: 65, rating: 4.5
   },
   {
-    id: '9', name: 'Slim Fit Chinos', slug: 'slim-fit-chinos',
-    description: 'Modern slim-fit chinos in premium stretch cotton. Versatile style from office to weekend.',
-    price: 2199, compare_price: 3499, category_id: 'men', category_name: 'Men',
+    id: '7', name: 'Classic Fit Cotton Shirt', slug: 'classic-fit-cotton-shirt',
+    description: 'Timeless regular-fit cotton shirt. Perfect for both casual outings and semi-formal occasions.',
+    price: 1099, compare_price: 1799, category_id: 'regular-shirts', category_name: 'Regular Shirts',
+    images: ['https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&h=800&fit=crop'],
+    sizes: ['S', 'M', 'L', 'XL'], colors: ['White', 'Light Blue', 'Black'],
+    tags: ['new'], is_featured: false, is_active: true, stock_quantity: 90, rating: 4.4
+  },
+  {
+    id: '8', name: 'Heavyweight Crew Tee', slug: 'heavyweight-crew-tee',
+    description: '280 GSM heavyweight cotton crew neck t-shirt. Premium quality fabric with a structured, boxy fit.',
+    price: 799, compare_price: 1299, category_id: 'regular-tshirts', category_name: 'Regular T-Shirts',
+    images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=800&fit=crop'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'], colors: ['Black', 'White', 'Grey', 'Olive'],
+    tags: ['bestseller'], is_featured: false, is_active: true, stock_quantity: 150, rating: 4.7
+  },
+  {
+    id: '9', name: 'Carpenter Oversized Jean', slug: 'carpenter-oversized-jean',
+    description: 'Utility-inspired carpenter jeans with oversized fit. Multiple tool pockets and reinforced stitching.',
+    price: 1999, compare_price: 3199, category_id: 'regular-jeans', category_name: 'Regular Jeans',
     images: ['https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600&h=800&fit=crop'],
-    sizes: ['28', '30', '32', '34', '36'], colors: ['Khaki', 'Black', 'Olive'],
-    tags: ['bestseller'], is_featured: false, is_active: true, stock_quantity: 90, rating: 4.5
-  },
-  {
-    id: '10', name: 'Silk Wrap Blouse', slug: 'silk-wrap-blouse',
-    description: 'Elegant silk wrap blouse with a flattering draped neckline. Pure mulberry silk.',
-    price: 3999, compare_price: 5999, category_id: 'women', category_name: 'Women',
-    images: ['https://images.unsplash.com/photo-1551163943-3f6a855d1153?w=600&h=800&fit=crop'],
-    sizes: ['XS', 'S', 'M', 'L'], colors: ['Emerald', 'Black', 'Ivory'],
-    tags: ['new', 'premium'], is_featured: false, is_active: true, stock_quantity: 22, rating: 4.7
-  },
-  {
-    id: '11', name: 'Denim Jacket', slug: 'denim-jacket',
-    description: 'Classic denim jacket with a modern relaxed fit. Garment-washed for a vintage look.',
-    price: 3499, compare_price: 4999, category_id: 'men', category_name: 'Men',
-    images: ['https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=600&h=800&fit=crop'],
-    sizes: ['S', 'M', 'L', 'XL'], colors: ['Medium Wash', 'Dark Wash', 'Black'],
+    sizes: ['28', '30', '32', '34', '36'], colors: ['Khaki', 'Black', 'Blue'],
     tags: ['trending'], is_featured: false, is_active: true, stock_quantity: 40, rating: 4.6
   },
   {
-    id: '12', name: 'Leather Belt', slug: 'leather-belt',
-    description: 'Handcrafted full-grain leather belt with brushed metal buckle. Built to last a lifetime.',
-    price: 1499, compare_price: 1999, category_id: 'accessories', category_name: 'Accessories',
-    images: ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&h=800&fit=crop'],
-    sizes: ['S', 'M', 'L', 'XL'], colors: ['Black', 'Brown', 'Green'],
-    tags: ['bestseller'], is_featured: false, is_active: true, stock_quantity: 100, rating: 4.3
+    id: '10', name: 'Derby Leather Shoe', slug: 'derby-leather-shoe',
+    description: 'Classic derby shoes in genuine leather. Handcrafted with a cushioned insole for all-day comfort.',
+    price: 3499, compare_price: 4999, category_id: 'shoes', category_name: 'Shoes',
+    images: ['https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=600&h=800&fit=crop'],
+    sizes: ['7', '8', '9', '10', '11'], colors: ['Black', 'Brown', 'Tan'],
+    tags: ['new', 'premium'], is_featured: false, is_active: true, stock_quantity: 25, rating: 4.8
+  },
+  {
+    id: '11', name: 'Pleated Wide Denim', slug: 'pleated-wide-denim',
+    description: 'Wide-leg denim with pleated front detailing. A fashion-forward take on classic workwear.',
+    price: 2599, compare_price: 3999, category_id: 'oversized-jeans', category_name: 'Oversized Jeans',
+    images: ['https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600&h=800&fit=crop'],
+    sizes: ['28', '30', '32', '34'], colors: ['Light Blue', 'Black'],
+    tags: ['trending'], is_featured: false, is_active: true, stock_quantity: 30, rating: 4.5
+  },
+  {
+    id: '12', name: 'Long Sleeve Oversized Tee', slug: 'long-sleeve-oversized-tee',
+    description: 'Oversized long-sleeve t-shirt in premium jersey cotton. Relaxed fit with ribbed cuffs.',
+    price: 1199, compare_price: 1799, category_id: 'oversized-tshirts', category_name: 'Oversized T-Shirts',
+    images: ['https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600&h=800&fit=crop'],
+    sizes: ['S', 'M', 'L', 'XL'], colors: ['Black', 'White', 'Charcoal'],
+    tags: ['new', 'bestseller'], is_featured: false, is_active: true, stock_quantity: 70, rating: 4.6
   }
 ];
 
 export const demoCategories = [
-  { id: 'men', name: "Men's", slug: 'men', description: 'Tailored for the modern man', image_url: 'https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=600&h=400&fit=crop', is_active: true },
-  { id: 'women', name: "Women's", slug: 'women', description: 'Effortless elegance', image_url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&h=400&fit=crop', is_active: true },
-  { id: 'accessories', name: 'Accessories', slug: 'accessories', description: 'The finishing touch', image_url: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600&h=400&fit=crop', is_active: true },
+  { id: 'oversized-jeans', name: 'Oversized Jeans', slug: 'oversized-jeans', description: 'Bold oversized denim', image_url: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&h=400&fit=crop', is_active: true },
+  { id: 'oversized-shirts', name: 'Oversized Shirts', slug: 'oversized-shirts', description: 'Drop shoulder shirts', image_url: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&h=400&fit=crop', is_active: true },
+  { id: 'oversized-tshirts', name: 'Oversized T-Shirts', slug: 'oversized-tshirts', description: 'Streetwear essentials', image_url: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=400&fit=crop', is_active: true },
+  { id: 'regular-jeans', name: 'Regular Jeans', slug: 'regular-jeans', description: 'Classic fit denim', image_url: 'https://images.unsplash.com/photo-1475178626620-a4d074967571?w=600&h=400&fit=crop', is_active: true },
+  { id: 'regular-shirts', name: 'Regular Shirts', slug: 'regular-shirts', description: 'Everyday shirts', image_url: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&h=400&fit=crop', is_active: true },
+  { id: 'regular-tshirts', name: 'Regular T-Shirts', slug: 'regular-tshirts', description: 'Premium basics', image_url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=400&fit=crop', is_active: true },
+  { id: 'shoes', name: 'Shoes', slug: 'shoes', description: 'Footwear collection', image_url: 'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=600&h=400&fit=crop', is_active: true },
 ];
 
 export function formatPrice(amount) {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
   }).format(amount);
 }
 

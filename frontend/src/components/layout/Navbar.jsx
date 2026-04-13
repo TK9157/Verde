@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { HiOutlineShoppingBag, HiOutlineUser, HiOutlineHeart, HiOutlineSearch, HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
+import { HiOutlineShoppingBag, HiOutlineSearch, HiOutlineMenu, HiOutlineX, HiOutlineChevronDown, HiOutlineChevronRight } from 'react-icons/hi';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from '../../contexts/CartContext';
+import { useProducts } from '../../contexts/ProductsContext';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [expandedCat, setExpandedCat] = useState(null);
   const { user, isAdmin } = useAuth();
   const { itemCount } = useCart();
+  const { categories } = useProducts();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,44 +21,45 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
+  const menuCategories = [
+    { label: 'Home', to: '/' },
+    { label: 'Shop Products', to: '/shop' },
+    { label: 'Oversized Jeans', to: '/shop?category=oversized-jeans' },
+    { label: 'Oversized Shirts', to: '/shop?category=oversized-shirts' },
+    { label: 'Oversized T-Shirts', to: '/shop?category=oversized-tshirts' },
+    { label: 'Regular Jeans', to: '/shop?category=regular-jeans' },
+    { label: 'Regular Shirts', to: '/shop?category=regular-shirts' },
+    { label: 'Regular T-Shirts', to: '/shop?category=regular-tshirts' },
+    { label: 'Shoes', to: '/shop?category=shoes' },
+  ];
+
   return (
     <>
-      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} style={!scrolled ? { background: 'transparent' } : {}}>
+      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="navbar-inner">
-          <Link to="/" className="logo">
-            <span className="logo-icon">A</span>
-            AMHAN
-          </Link>
-
-          <div className="nav-links">
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/shop">Shop</NavLink>
-            <NavLink to="/shop?category=men">Men</NavLink>
-            <NavLink to="/shop?category=women">Women</NavLink>
-            <NavLink to="/shop?category=accessories">Accessories</NavLink>
+          <div className="nav-left">
+            <button className="mobile-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
+              <HiOutlineMenu />
+            </button>
           </div>
+
+          <Link to="/" className="logo">
+            <img src="/logo.png" alt="AMHAN" style={{ height: '32px', objectFit: 'contain' }} />
+          </Link>
 
           <div className="nav-actions">
             <button className="cart-btn" onClick={() => setSearchOpen(!searchOpen)} aria-label="Search">
               <HiOutlineSearch />
             </button>
-            <button className="cart-btn" onClick={() => navigate('/wishlist')} aria-label="Wishlist">
-              <HiOutlineHeart />
-            </button>
             <button className="cart-btn" onClick={() => navigate('/cart')} aria-label="Cart">
               <HiOutlineShoppingBag />
               {itemCount > 0 && <span className="cart-count">{itemCount}</span>}
-            </button>
-            <button className="cart-btn" onClick={() => navigate(user ? '/profile' : '/login')} aria-label="Account">
-              <HiOutlineUser />
-            </button>
-            {isAdmin && (
-              <Link to="/admin" className="btn btn-sm btn-primary" style={{ marginLeft: '0.5rem' }}>
-                Admin
-              </Link>
-            )}
-            <button className="mobile-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
-              {mobileOpen ? <HiOutlineX /> : <HiOutlineMenu />}
             </button>
           </div>
         </div>
@@ -65,14 +69,14 @@ export default function Navbar() {
       {searchOpen && (
         <div style={{
           position: 'fixed', top: 'var(--navbar-height)', left: 0, right: 0, zIndex: 999,
-          background: 'var(--glass-bg)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)',
+          background: 'var(--bg-primary)', borderBottom: '1px solid var(--border)',
           padding: '1rem', animation: 'slideDown 0.3s ease'
         }}>
           <div className="container">
             <div style={{ display: 'flex', gap: '0.75rem', maxWidth: '600px', margin: '0 auto' }}>
               <input
                 className="input-field"
-                placeholder="Search for products..."
+                placeholder="Search products..."
                 style={{ flex: 1 }}
                 autoFocus
                 onKeyDown={(e) => {
@@ -88,25 +92,88 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Mobile Menu */}
-      {mobileOpen && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 998, background: 'var(--bg-primary)',
-          paddingTop: 'var(--navbar-height)', display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center', gap: '2rem'
-        }}>
-          <NavLink to="/" onClick={() => setMobileOpen(false)} style={{ fontSize: '1.5rem', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>Home</NavLink>
-          <NavLink to="/shop" onClick={() => setMobileOpen(false)} style={{ fontSize: '1.5rem', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>Shop</NavLink>
-          <NavLink to="/shop?category=men" onClick={() => setMobileOpen(false)} style={{ fontSize: '1.5rem', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>Men</NavLink>
-          <NavLink to="/shop?category=women" onClick={() => setMobileOpen(false)} style={{ fontSize: '1.5rem', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>Women</NavLink>
-          <NavLink to="/cart" onClick={() => setMobileOpen(false)} style={{ fontSize: '1.5rem', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>Cart ({itemCount})</NavLink>
+      {/* Sidebar Overlay */}
+      <div className={`sidebar-overlay ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(false)} />
+
+      {/* Sidebar Menu */}
+      <div className={`sidebar-menu ${menuOpen ? 'open' : ''}`}>
+        <button className="menu-close" onClick={() => setMenuOpen(false)}>
+          <HiOutlineX />
+        </button>
+
+        {/* Search in menu */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <h4 style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem', fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}>Search Products</h4>
+          <input
+            className="input-field"
+            placeholder="Search..."
+            style={{ width: '100%', background: 'white', fontSize: '0.8125rem' }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                navigate(`/shop?search=${e.target.value}`);
+                setMenuOpen(false);
+              }
+            }}
+          />
+        </div>
+
+        {/* Hot Categories */}
+        <h4 style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem', fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}>Hot Categories</h4>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
+          {categories.map(cat => (
+            <Link key={cat.id} to={`/shop?category=${cat.slug}`} onClick={() => setMenuOpen(false)}
+              style={{
+                padding: '0.375rem 0.75rem', background: 'white', borderRadius: 'var(--radius-sm)',
+                fontSize: '0.6875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em',
+                color: 'var(--text-primary)', transition: 'all 0.2s ease', border: '1px solid var(--border-light)'
+              }}>
+              {cat.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Menu */}
+        <h4 style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}>Menu</h4>
+
+        {menuCategories.map((item, i) => (
+          <Link key={i} to={item.to} className="menu-item" onClick={() => setMenuOpen(false)}>
+            {item.label}
+          </Link>
+        ))}
+
+        {/* Bottom links */}
+        <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+          {[
+            { label: 'About AMHAN', to: '/about' },
+            { label: 'Contact Us', to: '/contact' },
+            { label: 'Privacy Policy', to: '/privacy' },
+            { label: 'Terms of Use', to: '/terms' },
+            { label: 'Refund Policy', to: '/refund' },
+          ].map((item, i) => (
+            <Link key={i} to={item.to} onClick={() => setMenuOpen(false)}
+              style={{
+                display: 'block', padding: '0.5rem 0', fontSize: '0.75rem', fontWeight: 500,
+                color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em'
+              }}>
+              {item.label}
+            </Link>
+          ))}
+        </div>
+
+        {/* Account */}
+        <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
           {user ? (
-            <NavLink to="/profile" onClick={() => setMobileOpen(false)} style={{ fontSize: '1.5rem', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>Profile</NavLink>
+            <Link to="/profile" onClick={() => setMenuOpen(false)} className="menu-item">My Account</Link>
           ) : (
-            <NavLink to="/login" onClick={() => setMobileOpen(false)} style={{ fontSize: '1.5rem', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>Login</NavLink>
+            <Link to="/login" onClick={() => setMenuOpen(false)} className="menu-item">Login / Register</Link>
+          )}
+          {isAdmin && (
+            <Link to="/admin" onClick={() => setMenuOpen(false)} className="menu-item" style={{ color: 'var(--text-secondary)' }}>
+              Admin Panel
+            </Link>
           )}
         </div>
-      )}
+      </div>
 
       <style>{`
         @keyframes slideDown {

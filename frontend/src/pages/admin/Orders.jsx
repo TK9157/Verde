@@ -7,11 +7,11 @@ export default function AdminOrders() {
 
   const orders = [
     { id: 'ORD-001', customer: 'Roshan Kumar', email: 'roshan@email.com', items: 3, total: 4999, status: 'paid', date: '2026-04-13' },
-    { id: 'ORD-002', customer: 'Priya Sharma', email: 'priya@email.com', items: 2, total: 7499, status: 'processing', date: '2026-04-12' },
-    { id: 'ORD-003', customer: 'Arjun Patel', email: 'arjun@email.com', items: 1, total: 2299, status: 'shipped', date: '2026-04-12' },
-    { id: 'ORD-004', customer: 'Sakshi Reddy', email: 'sakshi@email.com', items: 4, total: 5699, status: 'delivered', date: '2026-04-11' },
-    { id: 'ORD-005', customer: 'Vikram Singh', email: 'vikram@email.com', items: 2, total: 3199, status: 'paid', date: '2026-04-11' },
-    { id: 'ORD-006', customer: 'Meera Joshi', email: 'meera@email.com', items: 1, total: 1299, status: 'cancelled', date: '2026-04-10' },
+    { id: 'ORD-002', customer: 'Arjun Sharma', email: 'arjun@email.com', items: 2, total: 7499, status: 'processing', date: '2026-04-12' },
+    { id: 'ORD-003', customer: 'Vikram Patel', email: 'vikram@email.com', items: 1, total: 2299, status: 'shipped', date: '2026-04-12' },
+    { id: 'ORD-004', customer: 'Rahul Reddy', email: 'rahul@email.com', items: 4, total: 5699, status: 'delivered', date: '2026-04-11' },
+    { id: 'ORD-005', customer: 'Karan Singh', email: 'karan@email.com', items: 2, total: 3199, status: 'paid', date: '2026-04-11' },
+    { id: 'ORD-006', customer: 'Aditya Joshi', email: 'aditya@email.com', items: 1, total: 1299, status: 'cancelled', date: '2026-04-10' },
   ];
 
   const filteredOrders = filter === 'all' ? orders : orders.filter(o => o.status === filter);
@@ -22,7 +22,7 @@ export default function AdminOrders() {
     <div>
       <div className="admin-topbar">
         <h1>Orders</h1>
-        <span style={{ color: 'var(--text-light-secondary)', fontSize: '0.875rem' }}>{orders.length} total orders</span>
+        <span style={{ color: 'var(--admin-text-secondary)', fontSize: '0.8125rem' }}>{orders.length} total orders</span>
       </div>
 
       {/* Filters */}
@@ -30,10 +30,10 @@ export default function AdminOrders() {
         {statusOptions.map(s => (
           <button key={s} onClick={() => setFilter(s)}
             style={{
-              padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)', fontSize: '0.8125rem', fontWeight: 600,
-              background: filter === s ? 'var(--primary)' : 'var(--bg-dark-secondary)',
-              color: filter === s ? 'white' : 'var(--text-light-secondary)',
-              border: `1px solid ${filter === s ? 'var(--primary)' : 'var(--border-dark)'}`,
+              padding: '0.5rem 1rem', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', fontWeight: 600,
+              background: filter === s ? 'var(--admin-accent)' : 'var(--admin-card)',
+              color: filter === s ? 'var(--admin-bg)' : 'var(--admin-text-secondary)',
+              border: `1px solid ${filter === s ? 'var(--admin-accent)' : 'var(--admin-border)'}`,
               cursor: 'pointer', textTransform: 'capitalize', transition: 'all 0.2s ease'
             }}>
             {s === 'all' ? 'All Orders' : s}
@@ -58,10 +58,10 @@ export default function AdminOrders() {
           <tbody>
             {filteredOrders.map(order => (
               <tr key={order.id}>
-                <td style={{ fontWeight: 600, color: 'var(--text-light)' }}>{order.id}</td>
+                <td style={{ fontWeight: 600, color: 'var(--admin-text)' }}>{order.id}</td>
                 <td>
                   <div>{order.customer}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-light-secondary)' }}>{order.email}</div>
+                  <div style={{ fontSize: '0.6875rem', color: 'var(--admin-text-secondary)' }}>{order.email}</div>
                 </td>
                 <td>{order.items}</td>
                 <td style={{ fontWeight: 600 }}>{formatPrice(order.total)}</td>
@@ -69,8 +69,8 @@ export default function AdminOrders() {
                 <td>{order.date}</td>
                 <td>
                   <select style={{
-                    padding: '0.375rem 0.625rem', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem',
-                    background: 'var(--bg-dark-tertiary)', border: '1px solid var(--border-dark)', color: 'var(--text-light-secondary)', cursor: 'pointer'
+                    padding: '0.375rem 0.625rem', borderRadius: 'var(--radius-sm)', fontSize: '0.6875rem',
+                    background: 'var(--admin-sidebar)', border: '1px solid var(--admin-border)', color: 'var(--admin-text-secondary)', cursor: 'pointer'
                   }} defaultValue={order.status}>
                     <option value="paid">Paid</option>
                     <option value="processing">Processing</option>

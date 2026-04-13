@@ -2,13 +2,15 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { HiOutlineShoppingBag, HiOutlineHeart, HiStar, HiOutlineTruck, HiOutlineRefresh, HiOutlineShieldCheck } from 'react-icons/hi';
-import { demoProducts, formatPrice, getDiscount } from '../data/products';
+import { formatPrice, getDiscount } from '../data/products';
+import { useProducts } from '../contexts/ProductsContext';
 import { useCart } from '../contexts/CartContext';
 import toast from 'react-hot-toast';
 
 export default function ProductDetail() {
   const { slug } = useParams();
-  const product = demoProducts.find(p => p.slug === slug);
+  const { products } = useProducts();
+  const product = products.find(p => p.slug === slug);
   const { addItem } = useCart();
 
   const [selectedSize, setSelectedSize] = useState('');
@@ -26,7 +28,7 @@ export default function ProductDetail() {
   }
 
   const discount = getDiscount(product.price, product.compare_price);
-  const related = demoProducts.filter(p => p.category_id === product.category_id && p.id !== product.id).slice(0, 4);
+  const related = products.filter(p => p.category_id === product.category_id && p.id !== product.id).slice(0, 4);
 
   const handleAddToCart = () => {
     if (!selectedSize) { toast.error('Please select a size'); return; }

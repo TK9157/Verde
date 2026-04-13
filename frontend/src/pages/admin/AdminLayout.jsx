@@ -31,8 +31,8 @@ export default function AdminLayout() {
       {/* Sidebar */}
       <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="admin-logo">
-          <span className="logo-dot">A</span>
-          AMHAN Admin
+          <div className="logo-dot">A</div>
+          AMHAN <span style={{ fontSize: '0.6rem', opacity: 0.6, marginLeft: '0.25rem', fontFamily: 'var(--font-body)' }}>Admin</span>
         </div>
 
         <nav>
@@ -44,8 +44,8 @@ export default function AdminLayout() {
           ))}
         </nav>
 
-        <div style={{ borderTop: '1px solid var(--border-dark)', paddingTop: 'var(--space-md)', marginTop: 'var(--space-md)' }}>
-          <NavLink to="/" className="nav-item" style={{ color: 'var(--primary-light)' }}>
+        <div style={{ borderTop: '1px solid var(--admin-border)', paddingTop: 'var(--space-md)', marginTop: 'var(--space-md)' }}>
+          <NavLink to="/" className="nav-item" style={{ color: 'var(--admin-accent)' }}>
             <span className="nav-icon"><HiOutlineExternalLink /></span>
             View Store
           </NavLink>
@@ -56,19 +56,19 @@ export default function AdminLayout() {
         </div>
 
         {/* User Info */}
-        <div style={{ marginTop: 'var(--space-md)', padding: 'var(--space-md)', background: 'var(--bg-dark-tertiary)', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ marginTop: 'var(--space-md)', padding: 'var(--space-md)', background: 'rgba(212,169,69,0.08)', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', gap: '0.75rem', border: '1px solid var(--admin-border)' }}>
           <div style={{
             width: 36, height: 36, borderRadius: 'var(--radius-full)',
-            background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: 'white', fontWeight: 700, fontSize: '0.875rem'
+            background: 'var(--admin-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: 'var(--admin-bg)', fontWeight: 700, fontSize: '0.875rem'
           }}>
             {(profile?.full_name || 'A')[0].toUpperCase()}
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontWeight: 600, fontSize: '0.8125rem', color: 'var(--text-light)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div style={{ fontWeight: 600, fontSize: '0.8125rem', color: 'var(--admin-text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {profile?.full_name || 'Admin'}
             </div>
-            <div style={{ fontSize: '0.6875rem', color: 'var(--text-light-secondary)' }}>{profile?.role || 'admin'}</div>
+            <div style={{ fontSize: '0.6875rem', color: 'var(--admin-text-secondary)' }}>{profile?.role || 'admin'}</div>
           </div>
         </div>
       </aside>
@@ -78,8 +78,8 @@ export default function AdminLayout() {
         {/* Mobile Toggle */}
         <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{
           display: 'none', position: 'fixed', top: 16, left: 16, zIndex: 101,
-          width: 44, height: 44, borderRadius: 'var(--radius-md)', background: 'var(--bg-dark-secondary)',
-          border: '1px solid var(--border-dark)', color: 'var(--text-light)', fontSize: '1.25rem',
+          width: 44, height: 44, borderRadius: 'var(--radius-md)', background: 'var(--admin-card)',
+          border: '1px solid var(--admin-border)', color: 'var(--admin-accent)', fontSize: '1.25rem',
           alignItems: 'center', justifyContent: 'center'
         }} className="admin-mobile-toggle">
           <HiOutlineMenu />

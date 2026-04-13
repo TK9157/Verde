@@ -1,150 +1,103 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { HiOutlineArrowRight, HiOutlineShoppingBag, HiOutlineHeart, HiOutlineEye } from 'react-icons/hi';
-import { demoProducts, demoCategories, formatPrice, getDiscount } from '../data/products';
+import { formatPrice, getDiscount } from '../data/products';
+import { useProducts } from '../contexts/ProductsContext';
 import { useCart } from '../contexts/CartContext';
 
 const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } };
 
 export default function Home() {
   const { addItem } = useCart();
-  const featured = demoProducts.filter(p => p.is_featured).slice(0, 4);
-  const newArrivals = demoProducts.filter(p => p.tags.includes('new')).slice(0, 4);
+  const { products, categories } = useProducts();
+  const featured = products.filter(p => p.is_featured).slice(0, 8);
+  const newArrivals = products.filter(p => p.tags?.includes('new')).slice(0, 4);
 
   return (
     <div>
-      {/* Hero */}
+      {/* Hero — Full-screen centered like stagmenfashion */}
       <section className="hero">
-        <div className="hero-bg-pattern" />
-        <div className="container">
-          <div className="hero-content">
-            <motion.div className="hero-text" initial="hidden" animate="visible" variants={fadeUp} transition={{ duration: 0.6 }}>
-              <h1>
-                Redefine Your<br />
-                <span>Style</span> With<br />
-                Purpose
-              </h1>
-              <p>
-                Premium sustainable clothing crafted for the conscious modern wardrobe.
-                Where ethical fashion meets timeless design.
-              </p>
-              <div className="hero-actions">
-                <Link to="/shop" className="btn btn-primary btn-lg">
-                  Shop Collection <HiOutlineArrowRight />
-                </Link>
-                <Link to="/shop?tag=new" className="btn btn-secondary btn-lg">
-                  New Arrivals
-                </Link>
-              </div>
-              <div className="hero-stats">
-                <div className="stat">
-                  <h3>200+</h3>
-                  <p>Premium Products</p>
-                </div>
-                <div className="stat">
-                  <h3>15K+</h3>
-                  <p>Happy Customers</p>
-                </div>
-                <div className="stat">
-                  <h3>4.9★</h3>
-                  <p>Average Rating</p>
-                </div>
-              </div>
+        {/* Background watermark text */}
+        <div className="hero-bg-text">AMHAN</div>
+
+        {/* Side text */}
+        <div className="hero-side-text left">
+          <div>"Style to Statement"</div>
+        </div>
+        <div className="hero-side-text right">
+          <div>New Collection</div>
+          <div style={{ marginTop: '0.25rem' }}>2025</div>
+        </div>
+
+        {/* Model Image */}
+        <motion.img
+          src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=600&h=900&fit=crop"
+          alt="AMHAN Fashion"
+          className="hero-model-img"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+        />
+
+        {/* Center content */}
+        <div className="hero-content">
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', gap: '0.75rem' }}>
+            <motion.div
+              className="hero-brand-text"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+            >
+              <img src="/logo.png" alt="AMHAN" style={{ height: 'clamp(50px, 12vw, 120px)', objectFit: 'contain' }} />
             </motion.div>
 
-            <motion.div className="hero-image" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}>
-              <div className="hero-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=750&fit=crop" alt="AMHAN Fashion" />
-              </div>
-              <motion.div className="hero-floating-card top-left" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ fontSize: '1.5rem' }}>🌿</span>
-                  <div>
-                    <div style={{ fontWeight: 700, fontSize: '0.875rem' }}>Eco Friendly</div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>100% Sustainable</div>
-                  </div>
-                </div>
-              </motion.div>
-              <motion.div className="hero-floating-card bottom-right" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ fontSize: '1.5rem' }}>⭐</span>
-                  <div>
-                    <div style={{ fontWeight: 700, fontSize: '0.875rem' }}>Premium Quality</div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Handcrafted Details</div>
-                  </div>
-                </div>
-              </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              <Link to="/shop" className="hero-shop-btn">
+                Shop Now
+              </Link>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Categories */}
+      {/* Categories — Grid */}
       <section className="section" style={{ background: 'var(--bg-secondary)' }}>
         <div className="container">
           <div className="section-header">
             <h2>Shop by Category</h2>
-            <p>Explore our curated collections designed for every style</p>
+            <p>Explore our men's fashion collections</p>
             <div className="accent-line" />
           </div>
-          <div className="grid-3">
-            {demoCategories.map((cat, i) => (
-              <motion.div key={cat.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: i * 0.2, duration: 0.6 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '1rem' }}>
+            {categories.map((cat, i) => (
+              <motion.div key={cat.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: i * 0.1, duration: 0.5 }}>
                 <Link to={`/shop?category=${cat.slug}`} style={{ display: 'block', textDecoration: 'none' }}>
-                  <motion.div
-                    whileHover={{ y: -8 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    style={{
-                      position: 'relative', borderRadius: 'var(--radius-xl)', overflow: 'hidden',
-                      aspectRatio: '3/2', cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                    }}
-                    className="category-card"
-                  >
-                    <motion.img
+                  <div style={{
+                    position: 'relative', borderRadius: 'var(--radius-sm)', overflow: 'hidden',
+                    aspectRatio: '3/4', cursor: 'pointer', background: 'var(--bg-tertiary)'
+                  }}>
+                    <img
                       src={cat.image_url} alt={cat.name}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.6, ease: 'easeOut' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
                     />
                     <div style={{
                       position: 'absolute', inset: 0,
-                      background: 'linear-gradient(transparent 30%, rgba(0,0,0,0.75))',
-                      display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '2rem',
-                      transition: 'background 0.4s ease'
-                    }} className="category-overlay">
-                      <motion.div initial={{ y: 10 }} whileInView={{ y: 0 }} transition={{ delay: i * 0.2 + 0.3 }}>
-                        <span style={{
-                          display: 'inline-block', padding: '0.25rem 0.75rem',
-                          background: 'var(--primary)', borderRadius: 'var(--radius-full)',
-                          fontSize: '0.6875rem', fontWeight: 700, color: 'white',
-                          textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem'
-                        }}>
-                          Explore
-                        </span>
-                        <h3 style={{ color: 'white', fontSize: '1.75rem', marginBottom: '0.375rem', fontFamily: 'var(--font-heading)' }}>{cat.name}</h3>
-                        <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9375rem' }}>{cat.description}</p>
-                        <div style={{
-                          display: 'flex', alignItems: 'center', gap: '0.375rem',
-                          marginTop: '0.75rem', color: 'var(--primary-lighter)',
-                          fontWeight: 600, fontSize: '0.875rem'
-                        }} className="category-cta">
-                          Shop Now <HiOutlineArrowRight />
-                        </div>
-                      </motion.div>
+                      background: 'linear-gradient(transparent 50%, rgba(0,0,0,0.7))',
+                      display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '1rem',
+                    }}>
+                      <h3 style={{ color: 'white', fontSize: '0.75rem', fontFamily: 'var(--font-body)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{cat.name}</h3>
                     </div>
-                  </motion.div>
+                  </div>
                 </Link>
               </motion.div>
             ))}
           </div>
         </div>
-
-        <style>{`
-          .category-card:hover { box-shadow: 0 12px 40px rgba(22, 163, 74, 0.2) !important; }
-          .category-card:hover .category-overlay { background: linear-gradient(transparent 10%, rgba(0,0,0,0.8)) !important; }
-          .category-card .category-cta { opacity: 0; transform: translateY(8px); transition: all 0.3s ease; }
-          .category-card:hover .category-cta { opacity: 1; transform: translateY(0); }
-        `}</style>
       </section>
 
       {/* Featured Products */}
@@ -152,12 +105,12 @@ export default function Home() {
         <div className="container">
           <div className="section-header">
             <h2>Featured Products</h2>
-            <p>Handpicked essentials for your modern wardrobe</p>
+            <p>Handpicked styles for the modern man</p>
             <div className="accent-line" />
           </div>
           <div className="grid-4">
             {featured.map((product, i) => (
-              <motion.div key={product.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: i * 0.1 }}>
+              <motion.div key={product.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: i * 0.05 }}>
                 <ProductCard product={product} onAddToCart={() => addItem(product, product.sizes[0], product.colors[0])} />
               </motion.div>
             ))}
@@ -170,19 +123,19 @@ export default function Home() {
 
       {/* Banner */}
       <section style={{
-        background: 'linear-gradient(135deg, var(--bg-dark) 0%, var(--primary-darker) 100%)',
+        background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
         padding: 'var(--space-3xl) 0', position: 'relative', overflow: 'hidden'
       }}>
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.05, backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.03, backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
         <div className="container" style={{ position: 'relative', textAlign: 'center' }}>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-            <h2 style={{ color: 'white', fontSize: '2.5rem', marginBottom: '1rem' }}>
-              New Season, New <span style={{ color: 'var(--primary-lighter)' }}>Style</span>
+            <h2 style={{ color: 'white', fontSize: '3rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              New Season Drop
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.7)', maxWidth: 500, margin: '0 auto 2rem', fontSize: '1.125rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.6)', maxWidth: 500, margin: '0 auto 2rem', fontSize: '0.9375rem' }}>
               Discover our latest collection with up to 40% off on selected items
             </p>
-            <Link to="/shop?tag=sale" className="btn btn-primary btn-lg">Shop Sale <HiOutlineArrowRight /></Link>
+            <Link to="/shop?tag=sale" className="btn btn-lg" style={{ background: 'white', color: 'black' }}>Shop Sale <HiOutlineArrowRight /></Link>
           </motion.div>
         </div>
       </section>
@@ -192,7 +145,7 @@ export default function Home() {
         <div className="container">
           <div className="section-header">
             <h2>New Arrivals</h2>
-            <p>Fresh styles just dropped — be the first to wear them</p>
+            <p>Fresh drops — be the first to wear them</p>
             <div className="accent-line" />
           </div>
           <div className="grid-4">
@@ -208,18 +161,18 @@ export default function Home() {
       {/* Trust Badges */}
       <section className="section" style={{ background: 'var(--bg-secondary)' }}>
         <div className="container">
-          <div className="grid-4" style={{ textAlign: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', textAlign: 'center' }}>
             {[
-              { icon: '🚚', title: 'Free Shipping', desc: 'On orders over ₹1,999' },
-              { icon: '🔄', title: 'Easy Returns', desc: '30-day return policy' },
+              { icon: '🚚', title: 'Free Shipping', desc: 'On orders over ₹999' },
+              { icon: '🔄', title: 'Easy Returns', desc: '7-day return policy' },
               { icon: '🛡️', title: 'Secure Payment', desc: '100% secure checkout' },
-              { icon: '💬', title: '24/7 Support', desc: 'Dedicated help center' },
+              { icon: '💬', title: 'WhatsApp Support', desc: 'Chat with us anytime' },
             ].map((item, i) => (
               <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: i * 0.1 }}
                 style={{ padding: '2rem 1rem' }}>
-                <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>{item.icon}</div>
-                <h3 style={{ fontSize: '1rem', marginBottom: '0.375rem' }}>{item.title}</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>{item.desc}</p>
+                <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>{item.icon}</div>
+                <h3 style={{ fontSize: '0.75rem', fontFamily: 'var(--font-body)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.375rem' }}>{item.title}</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.8125rem' }}>{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -234,7 +187,7 @@ function ProductCard({ product, onAddToCart }) {
   return (
     <div className="product-card">
       <div className="product-image">
-        {discount > 0 && <span className="product-badge badge badge-green">-{discount}%</span>}
+        {discount > 0 && <span className="product-badge">-{discount}%</span>}
         <Link to={`/product/${product.slug}`}>
           <img src={product.images[0]} alt={product.name} loading="lazy" />
         </Link>

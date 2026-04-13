@@ -1,75 +1,78 @@
 import { Link } from 'react-router-dom';
-import { HiOutlineMail } from 'react-icons/hi';
-import { FaInstagram, FaTwitter, FaFacebookF, FaPinterest } from 'react-icons/fa';
+import { FaInstagram, FaFacebookSquare, FaWhatsapp } from 'react-icons/fa';
 
 export default function Footer() {
   return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer-grid">
-          <div>
-            <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', marginBottom: '1rem' }}>
-              <span style={{
-                width: 32, height: 32, background: 'var(--primary)', borderRadius: 'var(--radius-sm)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white',
-                fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '0.875rem'
-              }}>A</span>
-              <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--text-light)' }}>
-                AMHAN
-              </span>
-            </Link>
-            <p style={{ maxWidth: 300, marginBottom: '1.5rem' }}>
-              Premium clothing that blends sustainability with style. Crafted for the modern wardrobe.
-            </p>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <input
-                className="input-field"
-                placeholder="Enter your email"
-                style={{ flex: 1, background: 'var(--bg-dark-tertiary)', border: '1px solid var(--border-dark)', color: 'var(--text-light)' }}
-              />
-              <button className="btn btn-primary btn-sm">
-                <HiOutlineMail />
-              </button>
+    <>
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-grid">
+            <div>
+              <h3 style={{ fontSize: '1.5rem', letterSpacing: '0.15em', marginBottom: '0.75rem', color: 'var(--text-light)', fontWeight: 700, fontFamily: 'var(--font-body)' }}>AMHAN</h3>
+              <p style={{ maxWidth: 280, marginBottom: '1rem', fontSize: '0.8125rem', lineHeight: 1.8 }}>
+                AMHAN, a premium men's fashion brand, emerged as a manifestation of our founder's unwavering principles. Infused with an innate love for streetwear, we persistently redefine the boundaries of exploration and style.
+              </p>
+              <p style={{ fontSize: '0.6875rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-light-secondary)', marginBottom: '1rem' }}>
+                AMHAN FASHION
+              </p>
+              <div style={{ display: 'flex', gap: '0.75rem' }}>
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"
+                  style={{ width: 36, height: 36, borderRadius: 'var(--radius-full)', background: 'var(--bg-dark-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-light-secondary)', transition: 'all 0.2s ease' }}>
+                  <FaInstagram />
+                </a>
+                <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook"
+                  style={{ width: 36, height: 36, borderRadius: 'var(--radius-full)', background: 'var(--bg-dark-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-light-secondary)', transition: 'all 0.2s ease' }}>
+                  <FaFacebookSquare />
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <h3>The Company</h3>
+              <Link to="/">Home</Link>
+              <Link to="/shop">Products</Link>
+              <Link to="/about">About Us</Link>
+              <Link to="/contact">Contact</Link>
+            </div>
+
+            <div>
+              <h3>Pages</h3>
+              <Link to="/privacy">Privacy Policy</Link>
+              <Link to="/terms">Terms of Use</Link>
+              <Link to="/cookies">Cookies Policy</Link>
+              <Link to="/refund">Refund Policy</Link>
+            </div>
+
+            <div>
+              <h3>Nearby Store</h3>
+              <a href="#">Location 1</a>
+              <a href="#">Location 2</a>
+              <a href="#">Location 3</a>
+            </div>
+
+            <div>
+              <h3>Orders</h3>
+              <Link to="/cart">View Cart</Link>
+              <Link to="/orders">Track Orders</Link>
             </div>
           </div>
 
-          <div>
-            <h3>Shop</h3>
-            <Link to="/shop?category=men">Men's Collection</Link>
-            <Link to="/shop?category=women">Women's Collection</Link>
-            <Link to="/shop?category=accessories">Accessories</Link>
-            <Link to="/shop?tag=new">New Arrivals</Link>
-            <Link to="/shop?tag=sale">Sale</Link>
-          </div>
-
-          <div>
-            <h3>Company</h3>
-            <Link to="/about">About Us</Link>
-            <Link to="/contact">Contact</Link>
-            <Link to="/careers">Careers</Link>
-            <Link to="/sustainability">Sustainability</Link>
-          </div>
-
-          <div>
-            <h3>Help</h3>
-            <Link to="/faq">FAQ</Link>
-            <Link to="/shipping">Shipping Info</Link>
-            <Link to="/returns">Returns</Link>
-            <Link to="/privacy">Privacy Policy</Link>
-            <Link to="/terms">Terms of Service</Link>
+          <div className="footer-bottom">
+            {/* Payment Icons */}
+            <div className="payment-icons">
+              {['AMEX', 'APPLE', 'DINER', 'DISC', 'GPAY', 'MSTRO', 'MC', 'PPAY', 'DPAY', 'UPAY', 'VISA'].map(icon => (
+                <div key={icon} className="pay-icon">{icon}</div>
+              ))}
+            </div>
+            <p>Copyright Reserved by AMHAN.</p>
           </div>
         </div>
+      </footer>
 
-        <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} AMHAN. All rights reserved.</p>
-          <div className="social-links">
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"><FaInstagram /></a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter"><FaTwitter /></a>
-            <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook"><FaFacebookF /></a>
-            <a href="https://pinterest.com" target="_blank" rel="noreferrer" aria-label="Pinterest"><FaPinterest /></a>
-          </div>
-        </div>
-      </div>
-    </footer>
+      {/* WhatsApp Float */}
+      <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" className="whatsapp-float" aria-label="WhatsApp">
+        <FaWhatsapp />
+      </a>
+    </>
   );
 }

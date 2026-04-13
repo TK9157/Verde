@@ -8,18 +8,18 @@ export default function AdminSettings() {
 
   const [settings, setSettings] = useState({
     store_name: 'AMHAN',
-    store_tagline: 'Premium Sustainable Clothing',
+    store_tagline: "Premium Men's Clothing Store",
     store_email: 'hello@amhan.com',
     store_phone: '+91 98765 43210',
     currency: 'INR',
-    shipping_free_min: 1999,
-    shipping_rate: 199,
+    shipping_free_min: 999,
+    shipping_rate: 99,
     tax_rate: 18,
     razorpay_key: '',
     razorpay_secret: '',
     shopify_domain: '',
     shopify_token: '',
-    primary_color: '#16A34A',
+    primary_color: '#000000',
     enable_reviews: true,
     enable_wishlist: true,
     maintenance_mode: false,
@@ -39,14 +39,14 @@ export default function AdminSettings() {
     { id: 'appearance', icon: <HiOutlineColorSwatch />, label: 'Appearance' },
   ];
 
-  const inputStyle = { background: 'var(--bg-dark-tertiary)', border: '1px solid var(--border-dark)', color: 'var(--text-light)' };
-  const labelStyle = { color: 'var(--text-light-secondary)' };
+  const inputStyle = { background: 'var(--admin-sidebar)', border: '1px solid var(--admin-border)', color: 'var(--admin-text)' };
+  const labelStyle = { color: 'var(--admin-text-secondary)' };
 
   return (
     <div>
       <div className="admin-topbar">
         <h1>Settings</h1>
-        <button className="btn btn-primary" onClick={handleSave}><HiOutlineSave /> Save Changes</button>
+        <button className="btn btn-primary" onClick={handleSave} style={{ background: 'var(--admin-accent)', color: 'var(--admin-bg)' }}><HiOutlineSave /> Save Changes</button>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 'var(--space-xl)' }}>
@@ -54,7 +54,7 @@ export default function AdminSettings() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`nav-item ${activeTab === tab.id ? 'active' : ''}`}
-              style={{ background: activeTab === tab.id ? 'var(--primary)' : 'transparent', color: activeTab === tab.id ? 'white' : 'var(--text-light-secondary)', border: 'none', textAlign: 'left' }}>
+              style={{ background: activeTab === tab.id ? 'var(--admin-accent)' : 'transparent', color: activeTab === tab.id ? 'var(--admin-bg)' : 'var(--admin-text-secondary)', border: 'none', textAlign: 'left' }}>
               <span className="nav-icon">{tab.icon}</span> {tab.label}
             </button>
           ))}
@@ -62,11 +62,11 @@ export default function AdminSettings() {
 
         {/* Content */}
         <motion.div key={activeTab} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
-          style={{ background: 'var(--bg-dark-secondary)', border: '1px solid var(--border-dark)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-xl)' }}>
+          style={{ background: 'var(--admin-card)', border: '1px solid var(--admin-border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-xl)' }}>
 
           {activeTab === 'general' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
-              <h3 style={{ color: 'var(--text-light)', marginBottom: 'var(--space-sm)' }}>General Settings</h3>
+              <h3 style={{ color: 'var(--admin-accent)', marginBottom: 'var(--space-sm)', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>General Settings</h3>
               <div className="input-group">
                 <label style={labelStyle}>Store Name</label>
                 <input className="input-field" value={settings.store_name} onChange={e => updateSetting('store_name', e.target.value)} style={inputStyle} />
@@ -95,14 +95,14 @@ export default function AdminSettings() {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: 'var(--space-sm)' }}>
                 <input type="checkbox" checked={settings.maintenance_mode} onChange={e => updateSetting('maintenance_mode', e.target.checked)} id="maintenance" />
-                <label htmlFor="maintenance" style={{ color: 'var(--text-light-secondary)', fontSize: '0.875rem' }}>🚧 Maintenance Mode (site will show "Coming Soon")</label>
+                <label htmlFor="maintenance" style={{ color: 'var(--admin-text-secondary)', fontSize: '0.8125rem' }}>🚧 Maintenance Mode (site will show "Coming Soon")</label>
               </div>
             </div>
           )}
 
           {activeTab === 'shipping' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
-              <h3 style={{ color: 'var(--text-light)', marginBottom: 'var(--space-sm)' }}>Shipping & Tax</h3>
+              <h3 style={{ color: 'var(--admin-accent)', marginBottom: 'var(--space-sm)', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Shipping & Tax</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)' }}>
                 <div className="input-group">
                   <label style={labelStyle}>Flat Shipping Rate (₹)</label>
@@ -122,11 +122,11 @@ export default function AdminSettings() {
 
           {activeTab === 'payments' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-lg)' }}>
-              <h3 style={{ color: 'var(--text-light)', marginBottom: 'var(--space-sm)' }}>Payment Integrations</h3>
+              <h3 style={{ color: 'var(--admin-accent)', marginBottom: 'var(--space-sm)', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Payment Integrations</h3>
 
               {/* Razorpay */}
-              <div style={{ border: '2px dashed var(--primary)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-lg)' }}>
-                <h4 style={{ color: 'var(--text-light)', marginBottom: 'var(--space-md)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>💳 Razorpay</h4>
+              <div style={{ border: '2px dashed var(--admin-accent)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-lg)' }}>
+                <h4 style={{ color: 'var(--admin-text)', marginBottom: 'var(--space-md)', display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.875rem' }}>💳 Razorpay</h4>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)' }}>
                   <div className="input-group">
                     <label style={labelStyle}>Key ID</label>
@@ -137,14 +137,14 @@ export default function AdminSettings() {
                     <input className="input-field" type="password" value={settings.razorpay_secret} onChange={e => updateSetting('razorpay_secret', e.target.value)} placeholder="••••••••" style={inputStyle} />
                   </div>
                 </div>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-light-secondary)', marginTop: '0.75rem' }}>
-                  Get your keys from <a href="https://dashboard.razorpay.com" target="_blank" rel="noreferrer" style={{ color: 'var(--primary-light)' }}>Razorpay Dashboard</a> → Settings → API Keys
+                <p style={{ fontSize: '0.6875rem', color: 'var(--admin-text-secondary)', marginTop: '0.75rem' }}>
+                  Get your keys from <a href="https://dashboard.razorpay.com" target="_blank" rel="noreferrer" style={{ color: 'var(--admin-accent)' }}>Razorpay Dashboard</a> → Settings → API Keys
                 </p>
               </div>
 
               {/* Shopify */}
-              <div style={{ border: '2px dashed var(--border-dark)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-lg)' }}>
-                <h4 style={{ color: 'var(--text-light)', marginBottom: 'var(--space-md)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>🛍️ Shopify (Sales Channel)</h4>
+              <div style={{ border: '2px dashed var(--admin-border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-lg)' }}>
+                <h4 style={{ color: 'var(--admin-text)', marginBottom: 'var(--space-md)', display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.875rem' }}>🛍️ Shopify (Sales Channel)</h4>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)' }}>
                   <div className="input-group">
                     <label style={labelStyle}>Store Domain</label>
@@ -155,7 +155,7 @@ export default function AdminSettings() {
                     <input className="input-field" type="password" value={settings.shopify_token} onChange={e => updateSetting('shopify_token', e.target.value)} placeholder="••••••••" style={inputStyle} />
                   </div>
                 </div>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-light-secondary)', marginTop: '0.75rem' }}>
+                <p style={{ fontSize: '0.6875rem', color: 'var(--admin-text-secondary)', marginTop: '0.75rem' }}>
                   Create a custom app in Shopify Admin → Settings → Apps → Develop apps
                 </p>
               </div>
@@ -164,23 +164,23 @@ export default function AdminSettings() {
 
           {activeTab === 'appearance' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
-              <h3 style={{ color: 'var(--text-light)', marginBottom: 'var(--space-sm)' }}>Appearance</h3>
+              <h3 style={{ color: 'var(--admin-accent)', marginBottom: 'var(--space-sm)', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Appearance</h3>
               <div className="input-group">
                 <label style={labelStyle}>Primary Brand Color</label>
                 <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                   <input type="color" value={settings.primary_color} onChange={e => updateSetting('primary_color', e.target.value)}
-                    style={{ width: 50, height: 40, border: '1px solid var(--border-dark)', borderRadius: 'var(--radius-sm)', cursor: 'pointer', background: 'transparent' }} />
+                    style={{ width: 50, height: 40, border: '1px solid var(--admin-border)', borderRadius: 'var(--radius-sm)', cursor: 'pointer', background: 'transparent' }} />
                   <input className="input-field" value={settings.primary_color} onChange={e => updateSetting('primary_color', e.target.value)} style={{ ...inputStyle, maxWidth: 150 }} />
                 </div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: 'var(--space-sm)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <input type="checkbox" checked={settings.enable_reviews} onChange={e => updateSetting('enable_reviews', e.target.checked)} id="reviews" />
-                  <label htmlFor="reviews" style={{ color: 'var(--text-light-secondary)', fontSize: '0.875rem' }}>Enable Product Reviews</label>
+                  <label htmlFor="reviews" style={{ color: 'var(--admin-text-secondary)', fontSize: '0.8125rem' }}>Enable Product Reviews</label>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <input type="checkbox" checked={settings.enable_wishlist} onChange={e => updateSetting('enable_wishlist', e.target.checked)} id="wishlist" />
-                  <label htmlFor="wishlist" style={{ color: 'var(--text-light-secondary)', fontSize: '0.875rem' }}>Enable Wishlist</label>
+                  <label htmlFor="wishlist" style={{ color: 'var(--admin-text-secondary)', fontSize: '0.8125rem' }}>Enable Wishlist</label>
                 </div>
               </div>
             </div>

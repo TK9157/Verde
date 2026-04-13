@@ -2,26 +2,26 @@ import { useState, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { HiOutlineShoppingBag, HiOutlineHeart, HiOutlineEye, HiOutlineAdjustments } from 'react-icons/hi';
-import { demoProducts, demoCategories, formatPrice, getDiscount } from '../data/products';
+import { formatPrice, getDiscount } from '../data/products';
+import { useProducts } from '../contexts/ProductsContext';
 import { useCart } from '../contexts/CartContext';
 import toast from 'react-hot-toast';
 
 export default function Shop() {
   const [searchParams] = useSearchParams();
   const { addItem } = useCart();
+  const { products, categories } = useProducts();
   const [sortBy, setSortBy] = useState('featured');
-  const [priceRange, setPriceRange] = useState([0, 99999]);
 
   const activeCategory = searchParams.get('category') || 'all';
   const searchQuery = searchParams.get('search') || '';
   const activeTag = searchParams.get('tag') || '';
 
   const filtered = useMemo(() => {
-    let result = [...demoProducts];
+    let result = [...products];
     if (activeCategory !== 'all') result = result.filter(p => p.category_id === activeCategory);
     if (searchQuery) result = result.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.description.toLowerCase().includes(searchQuery.toLowerCase()));
     if (activeTag) result = result.filter(p => p.tags.includes(activeTag));
-    result = result.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
 
     switch (sortBy) {
       case 'price-low': return result.sort((a, b) => a.price - b.price);
@@ -30,11 +30,11 @@ export default function Shop() {
       case 'rating': return result.sort((a, b) => b.rating - a.rating);
       default: return result;
     }
-  }, [activeCategory, searchQuery, activeTag, sortBy, priceRange]);
+  }, [activeCategory, searchQuery, activeTag, sortBy, products]);
 
   const handleAddToCart = (product) => {
     addItem(product, product.sizes[0], product.colors[0]);
-    toast.success(`${product.name} added to cart!`, { style: { borderRadius: '10px', background: '#0A0A0A', color: '#fff' } });
+    toast.success(`${product.name} added to cart!`);
   };
 
   return (
@@ -43,10 +43,10 @@ export default function Shop() {
         <div className="shop-header">
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             {activeCategory !== 'all'
-              ? demoCategories.find(c => c.slug === activeCategory)?.name || 'Shop'
+              ? categories.find(c => c.slug === activeCategory)?.name || 'Shop'
               : searchQuery ? `Results for "${searchQuery}"` : 'All Products'}
           </motion.h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
+          <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', fontSize: '0.875rem' }}>
             {filtered.length} product{filtered.length !== 1 ? 's' : ''} found
           </p>
         </div>
@@ -55,7 +55,7 @@ export default function Shop() {
         <div className="shop-controls">
           <div className="filter-tags">
             <Link to="/shop" className={`filter-tag ${activeCategory === 'all' && !activeTag ? 'active' : ''}`}>All</Link>
-            {demoCategories.map(cat => (
+            {categories.map(cat => (
               <Link key={cat.id} to={`/shop?category=${cat.slug}`} className={`filter-tag ${activeCategory === cat.slug ? 'active' : ''}`}>
                 {cat.name}
               </Link>
@@ -70,7 +70,7 @@ export default function Shop() {
               className="input-field"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              style={{ padding: '0.5rem 1rem', minWidth: '160px' }}
+              style={{ padding: '0.5rem 1rem', minWidth: '160px', fontSize: '0.75rem' }}
             >
               <option value="featured">Featured</option>
               <option value="newest">Newest</option>
@@ -87,10 +87,10 @@ export default function Shop() {
             {filtered.map((product, i) => {
               const discount = getDiscount(product.price, product.compare_price);
               return (
-                <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+                <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
                   <div className="product-card">
                     <div className="product-image">
-                      {discount > 0 && <span className="product-badge badge badge-green">-{discount}%</span>}
+                      {discount > 0 && <span className="product-badge">-{discount}%</span>}
                       <Link to={`/product/${product.slug}`}>
                         <img src={product.images[0]} alt={product.name} loading="lazy" />
                       </Link>
@@ -108,7 +108,6 @@ export default function Shop() {
                       <div className="product-price">
                         <span className="current">{formatPrice(product.price)}</span>
                         {discount > 0 && <span className="original">{formatPrice(product.compare_price)}</span>}
-                        {discount > 0 && <span className="discount">-{discount}%</span>}
                       </div>
                     </div>
                   </div>
@@ -119,8 +118,8 @@ export default function Shop() {
         ) : (
           <div style={{ textAlign: 'center', padding: '4rem 0' }}>
             <p style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</p>
-            <h3>No products found</h3>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Try adjusting your filters</p>
+            <h3 style={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}>No products found</h3>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', fontSize: '0.875rem' }}>Try adjusting your filters</p>
             <Link to="/shop" className="btn btn-primary" style={{ marginTop: '1.5rem' }}>View All Products</Link>
           </div>
         )}
