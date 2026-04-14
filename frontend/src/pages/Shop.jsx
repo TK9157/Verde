@@ -110,11 +110,13 @@ export default function Shop() {
           </div>
         </div>
 
-        {/* Category Filters */}
+        {/* Category Filters — hide categories that duplicate gender names */}
         <div className="shop-controls">
           <div className="filter-tags">
             <Link to="/shop" className={`filter-tag ${activeCategory === 'all' && !activeTag && activeGender === 'all' ? 'active' : ''}`}>All</Link>
-            {categories.map(cat => (
+            {categories
+              .filter(cat => !['men', 'women', 'unisex', 'accessories'].includes(cat.name.toLowerCase()))
+              .map(cat => (
               <Link key={cat.id} to={`/shop?category=${cat.slug}`} className={`filter-tag ${activeCategory === cat.slug ? 'active' : ''}`}>
                 {cat.name}
               </Link>

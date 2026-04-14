@@ -8,6 +8,12 @@ import toast from 'react-hot-toast';
 const MAX_IMAGES = 10;
 const MIN_IMAGES = 1;
 
+const COMMON_SIZES = {
+  clothing: ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'],
+  jeans: ['28', '30', '32', '34', '36', '38', '40'],
+  shoes: ['6', '7', '8', '9', '10', '11', '12'],
+};
+
 export default function AdminProducts() {
   const { products, categories, addProduct, updateProduct, deleteProduct } = useProducts();
   const [search, setSearch] = useState('');
@@ -17,8 +23,11 @@ export default function AdminProducts() {
 
   const [form, setForm] = useState({
     name: '', price: '', compare_price: '', category_id: '',
-    description: '', stock_quantity: '', is_active: true, images: []
+    description: '', stock_quantity: '', is_active: true, images: [],
+    sizes: [], colors: []
   });
+  const [newSize, setNewSize] = useState('');
+  const [newColor, setNewColor] = useState('');
 
   const filtered = products.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
 
@@ -28,9 +37,13 @@ export default function AdminProducts() {
       name: product.name, price: product.price, compare_price: product.compare_price || '',
       category_id: product.category_id, description: product.description,
       stock_quantity: product.stock_quantity, is_active: product.is_active,
-      images: product.images || []
+      images: product.images || [],
+      sizes: product.sizes || [],
+      colors: product.colors || []
     });
     setNewImageUrl('');
+    setNewSize('');
+    setNewColor('');
     setShowModal(true);
   };
 
@@ -38,9 +51,12 @@ export default function AdminProducts() {
     setEditingProduct(null);
     setForm({
       name: '', price: '', compare_price: '', category_id: categories[0]?.id || '',
-      description: '', stock_quantity: '', is_active: true, images: []
+      description: '', stock_quantity: '', is_active: true, images: [],
+      sizes: ['S', 'M', 'L', 'XL'], colors: ['Black', 'White']
     });
     setNewImageUrl('');
+    setNewSize('');
+    setNewColor('');
     setShowModal(true);
   };
 
@@ -275,6 +291,124 @@ export default function AdminProducts() {
               <div className="input-group">
                 <label style={labelStyle}>Description</label>
                 <textarea className="input-field" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={3} placeholder="Product description..." style={inputStyle} />
+              </div>
+
+              {/* ── SIZES SECTION ── */}
+              <div className="input-group">
+                <label style={{ ...labelStyle, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>Sizes</span>
+                  {form.sizes.length > 0 && (
+                    <button type="button" onClick={() => setForm(prev => ({ ...prev, sizes: [] }))}
+                      style={{ background: 'transparent', border: 'none', color: 'var(--error)', cursor: 'pointer', fontSize: '0.625rem', fontWeight: 600, textTransform: 'uppercase' }}>
+                      Clear All
+                    </button>
+                  )}
+                </label>
+
+                {/* Quick add presets */}
+                <div style={{ display: 'flex', gap: '0.375rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+                  {Object.entries(COMMON_SIZES).map(([key, sizes]) => (
+                    <button key={key} type="button" onClick={() => setForm(prev => ({ ...prev, sizes }))}
+                      style={{
+                        background: 'var(--admin-sidebar)', border: '1px solid var(--admin-border)', color: 'var(--admin-accent)',
+                        borderRadius: 'var(--radius-sm)', padding: '0.25rem 0.5rem', cursor: 'pointer',
+                        fontSize: '0.5625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em'
+                      }}>
+                      {key}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Size pills */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem', marginBottom: '0.5rem' }}>
+                  {form.sizes.map((size, i) => (
+                    <span key={i} style={{
+                      display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
+                      padding: '0.25rem 0.5rem', background: 'var(--admin-sidebar)',
+                      border: '1px solid var(--admin-border)', borderRadius: 'var(--radius-sm)',
+                      fontSize: '0.75rem', color: 'var(--admin-text)', fontWeight: 600
+                    }}>
+                      {size}
+                      <button type="button" onClick={() => setForm(prev => ({ ...prev, sizes: prev.sizes.filter((_, j) => j !== i) }))}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--error)', cursor: 'pointer', fontSize: '0.875rem', padding: 0, lineHeight: 1 }}>×</button>
+                    </span>
+                  ))}
+                </div>
+
+                {/* Add custom size */}
+                <div style={{ display: 'flex', gap: '0.375rem' }}>
+                  <input className="input-field" value={newSize} onChange={e => setNewSize(e.target.value)}
+                    placeholder="Custom size (e.g. XXL, 42)" style={{ ...inputStyle, flex: 1, padding: '0.5rem 0.75rem', fontSize: '0.75rem' }}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const s = newSize.trim();
+                        if (s && !form.sizes.includes(s)) {
+                          setForm(prev => ({ ...prev, sizes: [...prev.sizes, s] }));
+                          setNewSize('');
+                        }
+                      }
+                    }} />
+                  <button type="button" onClick={() => {
+                    const s = newSize.trim();
+                    if (s && !form.sizes.includes(s)) {
+                      setForm(prev => ({ ...prev, sizes: [...prev.sizes, s] }));
+                      setNewSize('');
+                    }
+                  }} style={{
+                    background: 'var(--admin-accent)', color: 'var(--admin-bg)', border: 'none',
+                    borderRadius: 'var(--radius-sm)', padding: '0 0.75rem', cursor: 'pointer',
+                    fontWeight: 700, fontSize: '0.6875rem', whiteSpace: 'nowrap'
+                  }}>+ Add</button>
+                </div>
+              </div>
+
+              {/* ── COLORS SECTION ── */}
+              <div className="input-group">
+                <label style={labelStyle}>Colors</label>
+
+                {/* Color pills */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem', marginBottom: '0.5rem' }}>
+                  {form.colors.map((color, i) => (
+                    <span key={i} style={{
+                      display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
+                      padding: '0.25rem 0.5rem', background: 'var(--admin-sidebar)',
+                      border: '1px solid var(--admin-border)', borderRadius: 'var(--radius-sm)',
+                      fontSize: '0.75rem', color: 'var(--admin-text)', fontWeight: 600
+                    }}>
+                      {color}
+                      <button type="button" onClick={() => setForm(prev => ({ ...prev, colors: prev.colors.filter((_, j) => j !== i) }))}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--error)', cursor: 'pointer', fontSize: '0.875rem', padding: 0, lineHeight: 1 }}>×</button>
+                    </span>
+                  ))}
+                </div>
+
+                {/* Add custom color */}
+                <div style={{ display: 'flex', gap: '0.375rem' }}>
+                  <input className="input-field" value={newColor} onChange={e => setNewColor(e.target.value)}
+                    placeholder="Color name (e.g. Navy, Beige)" style={{ ...inputStyle, flex: 1, padding: '0.5rem 0.75rem', fontSize: '0.75rem' }}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const c = newColor.trim();
+                        if (c && !form.colors.includes(c)) {
+                          setForm(prev => ({ ...prev, colors: [...prev.colors, c] }));
+                          setNewColor('');
+                        }
+                      }
+                    }} />
+                  <button type="button" onClick={() => {
+                    const c = newColor.trim();
+                    if (c && !form.colors.includes(c)) {
+                      setForm(prev => ({ ...prev, colors: [...prev.colors, c] }));
+                      setNewColor('');
+                    }
+                  }} style={{
+                    background: 'var(--admin-accent)', color: 'var(--admin-bg)', border: 'none',
+                    borderRadius: 'var(--radius-sm)', padding: '0 0.75rem', cursor: 'pointer',
+                    fontWeight: 700, fontSize: '0.6875rem', whiteSpace: 'nowrap'
+                  }}>+ Add</button>
+                </div>
               </div>
 
               {/* Stock */}

@@ -4,9 +4,7 @@ import { HiOutlineArrowRight, HiOutlineShoppingBag, HiOutlineHeart, HiOutlineEye
 import { formatPrice, getDiscount } from '../data/products';
 import { useProducts } from '../contexts/ProductsContext';
 import { useCart } from '../contexts/CartContext';
-import { lazy, Suspense } from 'react';
-
-const Hero3D = lazy(() => import('../components/Hero3D'));
+import Hero3D from '../components/Hero3D';
 
 const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } };
 
@@ -45,18 +43,8 @@ export default function Home() {
         </div>
 
         {/* 3D Canvas behind text */}
-        <Suspense fallback={
-          <motion.img
-            src={sectionImages.men}
-            alt="AMHAN Fashion"
-            className="hero-model-img"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-          />
-        }>
-          <Hero3D />
-        </Suspense>
+        {/* Interactive parallax hero */}
+        <Hero3D />
 
         {/* Center content */}
         <div className="hero-content">
