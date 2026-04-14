@@ -4,8 +4,25 @@ import { HiOutlineArrowRight, HiOutlineShoppingBag, HiOutlineHeart, HiOutlineEye
 import { formatPrice, getDiscount } from '../data/products';
 import { useProducts } from '../contexts/ProductsContext';
 import { useCart } from '../contexts/CartContext';
+import { lazy, Suspense } from 'react';
+
+const Hero3D = lazy(() => import('../components/Hero3D'));
 
 const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } };
+
+/* ─── Gender Section Images (Unsplash) ─── */
+const sectionImages = {
+  men: 'https://images.unsplash.com/photo-1617137968427-85924c800a22?w=800&h=1000&fit=crop',
+  women: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&h=1000&fit=crop',
+  unisex: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&h=600&fit=crop',
+};
+
+const accessoryCards = [
+  { label: 'Shoes', to: '/shop?category=shoes', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=400&fit=crop', icon: '👟' },
+  { label: 'Watches', to: '/shop?category=watches', img: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&h=400&fit=crop', icon: '⌚' },
+  { label: 'Bags', to: '/shop?category=bags', img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=400&fit=crop', icon: '👜' },
+  { label: 'Sunglasses', to: '/shop?category=sunglasses', img: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=400&fit=crop', icon: '🕶️' },
+];
 
 export default function Home() {
   const { addItem } = useCart();
@@ -15,29 +32,31 @@ export default function Home() {
 
   return (
     <div>
-      {/* Hero — Full-screen centered like stagmenfashion */}
+      {/* ═══ HERO ━ 3D Interactive ═══ */}
       <section className="hero">
-        {/* Background watermark text */}
         <div className="hero-bg-text">AMHAN</div>
 
-        {/* Side text */}
         <div className="hero-side-text left">
           <div>"Style to Statement"</div>
         </div>
         <div className="hero-side-text right">
           <div>New Collection</div>
-          <div style={{ marginTop: '0.25rem' }}>2025</div>
+          <div style={{ marginTop: '0.25rem' }}>2026</div>
         </div>
 
-        {/* Model Image */}
-        <motion.img
-          src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=600&h=900&fit=crop"
-          alt="AMHAN Fashion"
-          className="hero-model-img"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-        />
+        {/* 3D Canvas behind text */}
+        <Suspense fallback={
+          <motion.img
+            src={sectionImages.men}
+            alt="AMHAN Fashion"
+            className="hero-model-img"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          />
+        }>
+          <Hero3D />
+        </Suspense>
 
         {/* Center content */}
         <div className="hero-content">
@@ -65,12 +84,88 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Categories — Grid */}
+      {/* ═══ GENDER SECTIONS ═══ */}
+
+      {/* ── MEN ── */}
+      <section className="gender-section">
+        <motion.div className="gender-section-inner" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ duration: 0.6 }}>
+          <div className="gender-img-wrap">
+            <img src={sectionImages.men} alt="Men's Collection" />
+            <div className="gender-img-overlay" />
+          </div>
+          <div className="gender-text">
+            <span className="gender-label">Collection</span>
+            <h2 className="gender-title">Men</h2>
+            <p className="gender-desc">Bold silhouettes & street-ready fits. Oversized denim, graphic tees, and signature styles crafted for the modern man.</p>
+            <Link to="/shop?gender=men" className="btn btn-secondary btn-lg">Explore Men <HiOutlineArrowRight /></Link>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ── WOMEN ── */}
+      <section className="gender-section gender-section--alt">
+        <motion.div className="gender-section-inner" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ duration: 0.6 }}>
+          <div className="gender-text">
+            <span className="gender-label">Collection</span>
+            <h2 className="gender-title">Women</h2>
+            <p className="gender-desc">Effortless elegance meets contemporary edge. Statement pieces, flowing fabrics, and curated essentials for her.</p>
+            <Link to="/shop?gender=women" className="btn btn-secondary btn-lg">Explore Women <HiOutlineArrowRight /></Link>
+          </div>
+          <div className="gender-img-wrap">
+            <img src={sectionImages.women} alt="Women's Collection" />
+            <div className="gender-img-overlay" />
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ── UNISEX ── */}
+      <section className="gender-section gender-section--full" style={{ background: 'var(--bg-secondary)' }}>
+        <motion.div className="gender-full-inner" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ duration: 0.6 }}>
+          <div className="gender-full-img">
+            <img src={sectionImages.unisex} alt="Unisex Collection" />
+            <div className="gender-full-content">
+              <span className="gender-label" style={{ color: 'rgba(255,255,255,0.7)' }}>Gender Neutral</span>
+              <h2 className="gender-title" style={{ color: 'white' }}>Unisex</h2>
+              <p className="gender-desc" style={{ color: 'rgba(255,255,255,0.7)' }}>Designed without boundaries. Timeless pieces made for everyone.</p>
+              <Link to="/shop?gender=unisex" className="btn btn-lg" style={{ background: 'white', color: 'black' }}>Shop Unisex <HiOutlineArrowRight /></Link>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ── ACCESSORIES ── */}
+      <section className="section">
+        <div className="container">
+          <div className="section-header">
+            <h2>Accessories</h2>
+            <p>Complete your look with curated essentials</p>
+            <div className="accent-line" />
+          </div>
+          <div className="accessories-grid">
+            {accessoryCards.map((item, i) => (
+              <motion.div key={item.label} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: i * 0.1, duration: 0.5 }}>
+                <Link to={item.to} className="accessory-card">
+                  <div className="accessory-card-img">
+                    <img src={item.img} alt={item.label} />
+                  </div>
+                  <div className="accessory-card-info">
+                    <span className="accessory-icon">{item.icon}</span>
+                    <h3>{item.label}</h3>
+                    <span className="accessory-cta">Shop Now <HiOutlineArrowRight /></span>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ CATEGORIES ═══ */}
       <section className="section" style={{ background: 'var(--bg-secondary)' }}>
         <div className="container">
           <div className="section-header">
             <h2>Shop by Category</h2>
-            <p>Explore our men's fashion collections</p>
+            <p>Explore our fashion collections</p>
             <div className="accent-line" />
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '1rem' }}>
@@ -100,12 +195,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Products */}
+      {/* ═══ FEATURED PRODUCTS ═══ */}
       <section className="section">
         <div className="container">
           <div className="section-header">
             <h2>Featured Products</h2>
-            <p>Handpicked styles for the modern man</p>
+            <p>Handpicked styles for you</p>
             <div className="accent-line" />
           </div>
           <div className="grid-4">
@@ -121,27 +216,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Banner */}
-      <section style={{
-        background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
-        padding: 'var(--space-3xl) 0', position: 'relative', overflow: 'hidden'
-      }}>
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.03, backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-        <div className="container" style={{ position: 'relative', textAlign: 'center' }}>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-            <h2 style={{ color: 'white', fontSize: '3rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-              New Season Drop
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.6)', maxWidth: 500, margin: '0 auto 2rem', fontSize: '0.9375rem' }}>
-              Discover our latest collection with up to 40% off on selected items
-            </p>
-            <Link to="/shop?tag=sale" className="btn btn-lg" style={{ background: 'white', color: 'black' }}>Shop Sale <HiOutlineArrowRight /></Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* New Arrivals */}
-      <section className="section">
+      {/* ═══ NEW ARRIVALS ═══ */}
+      <section className="section" style={{ background: 'var(--bg-secondary)' }}>
         <div className="container">
           <div className="section-header">
             <h2>New Arrivals</h2>
@@ -158,8 +234,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trust Badges */}
-      <section className="section" style={{ background: 'var(--bg-secondary)' }}>
+      {/* ═══ TRUST BADGES ═══ */}
+      <section className="section">
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', textAlign: 'center' }}>
             {[

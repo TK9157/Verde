@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../services/supabase';
 
+const SUPER_ADMIN_EMAILS = ['rjroshandev2010@gmail.com'];
+
 const AuthContext = createContext({});
 
 export const useAuth = () => useContext(AuthContext);
@@ -98,19 +100,43 @@ export function AuthProvider({ children }) {
   }
 
   async function updateProfile(updates) {
-    const { data, error } = await supabase
-      .from('profiles')
-      .update(updates)
-      .eq('id', user.id)
-      .select()
-      .single();
-    if (error) throw error;
-    setProfile(data);
-    return data;
+    try {
+      // Try updating the profiles table first
+      const { data, error } = await supabase
+        .from('profiles')
+        .update(updates)
+        .eq('id', user.id)
+        .select()
+        .single();
+      if (error) {
+        // If profiles table update fails (e.g. missing columns), try upsert
+        const { data: upsertData, error: upsertError } = await supabase
+          .from('profiles')
+          .upsert({ id: user.id, ...updates }, { onConflict: 'id' })
+          .select()
+          .single();
+        if (upsertError) {
+          // Fallback: update user metadata in auth
+          await supabase.auth.updateUser({ data: updates });
+          setProfile(prev => ({ ...prev, ...updates }));
+          return { ...profile, ...updates };
+        }
+        setProfile(upsertData);
+        return upsertData;
+      }
+      setProfile(data);
+      return data;
+    } catch (err) {
+      // Final fallback — just update local state
+      console.error('Profile update error:', err);
+      await supabase.auth.updateUser({ data: updates });
+      setProfile(prev => ({ ...prev, ...updates }));
+      return { ...profile, ...updates };
+    }
   }
 
-  const isAdmin = profile?.role === 'admin' || profile?.role === 'super_admin';
-  const isSuperAdmin = profile?.role === 'super_admin';
+  const isSuperAdmin = profile?.role === 'super_admin' || SUPER_ADMIN_EMAILS.includes(user?.email);
+  const isAdmin = isSuperAdmin || profile?.role === 'admin';
 
   const value = {
     user, profile, loading,

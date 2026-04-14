@@ -9,8 +9,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [expandedCat, setExpandedCat] = useState(null);
-  const { user, isAdmin } = useAuth();
+  const { user, isSuperAdmin } = useAuth();
   const { itemCount } = useCart();
   const { categories } = useProducts();
   const navigate = useNavigate();
@@ -27,16 +26,13 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
-  const menuCategories = [
+  const mainSections = [
     { label: 'Home', to: '/' },
-    { label: 'Shop Products', to: '/shop' },
-    { label: 'Oversized Jeans', to: '/shop?category=oversized-jeans' },
-    { label: 'Oversized Shirts', to: '/shop?category=oversized-shirts' },
-    { label: 'Oversized T-Shirts', to: '/shop?category=oversized-tshirts' },
-    { label: 'Regular Jeans', to: '/shop?category=regular-jeans' },
-    { label: 'Regular Shirts', to: '/shop?category=regular-shirts' },
-    { label: 'Regular T-Shirts', to: '/shop?category=regular-tshirts' },
-    { label: 'Shoes', to: '/shop?category=shoes' },
+    { label: 'Shop All', to: '/shop' },
+    { label: 'Men', to: '/shop?gender=men' },
+    { label: 'Women', to: '/shop?gender=women' },
+    { label: 'Unisex', to: '/shop?gender=unisex' },
+    { label: 'Accessories', to: '/shop?gender=accessories' },
   ];
 
   return (
@@ -117,8 +113,17 @@ export default function Navbar() {
           />
         </div>
 
-        {/* Hot Categories */}
-        <h4 style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem', fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}>Hot Categories</h4>
+        {/* Main Sections */}
+        <h4 style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}>Menu</h4>
+
+        {mainSections.map((item, i) => (
+          <Link key={i} to={item.to} className="menu-item" onClick={() => setMenuOpen(false)}>
+            {item.label}
+          </Link>
+        ))}
+
+        {/* Category Tags */}
+        <h4 style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem', marginTop: '1.5rem', fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}>Categories</h4>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
           {categories.map(cat => (
             <Link key={cat.id} to={`/shop?category=${cat.slug}`} onClick={() => setMenuOpen(false)}
@@ -132,17 +137,8 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Menu */}
-        <h4 style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem', fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}>Menu</h4>
-
-        {menuCategories.map((item, i) => (
-          <Link key={i} to={item.to} className="menu-item" onClick={() => setMenuOpen(false)}>
-            {item.label}
-          </Link>
-        ))}
-
         {/* Bottom links */}
-        <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+        <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
           {[
             { label: 'About AMHAN', to: '/about' },
             { label: 'Contact Us', to: '/contact' },
@@ -158,6 +154,19 @@ export default function Navbar() {
               {item.label}
             </Link>
           ))}
+
+          {/* Admin Panel — only for super admin */}
+          {isSuperAdmin && (
+            <Link to="/admin" onClick={() => setMenuOpen(false)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.75rem 0', fontSize: '0.75rem', fontWeight: 700,
+                color: '#D4A945', textTransform: 'uppercase', letterSpacing: '0.06em',
+                marginTop: '0.5rem', borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: '1rem'
+              }}>
+              ⚙ Admin Panel
+            </Link>
+          )}
         </div>
 
         {/* Account */}
@@ -166,11 +175,6 @@ export default function Navbar() {
             <Link to="/profile" onClick={() => setMenuOpen(false)} className="menu-item">My Account</Link>
           ) : (
             <Link to="/login" onClick={() => setMenuOpen(false)} className="menu-item">Login / Register</Link>
-          )}
-          {isAdmin && (
-            <Link to="/admin" onClick={() => setMenuOpen(false)} className="menu-item" style={{ color: 'var(--text-secondary)' }}>
-              Admin Panel
-            </Link>
           )}
         </div>
       </div>

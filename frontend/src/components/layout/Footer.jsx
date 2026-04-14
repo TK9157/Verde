@@ -10,7 +10,7 @@ export default function Footer() {
             <div>
               <h3 style={{ fontSize: '1.5rem', letterSpacing: '0.15em', marginBottom: '0.75rem', color: 'var(--text-light)', fontWeight: 700, fontFamily: 'var(--font-body)' }}>AMHAN</h3>
               <p style={{ maxWidth: 280, marginBottom: '1rem', fontSize: '0.8125rem', lineHeight: 1.8 }}>
-                AMHAN, a premium men's fashion brand, emerged as a manifestation of our founder's unwavering principles. Infused with an innate love for streetwear, we persistently redefine the boundaries of exploration and style.
+                AMHAN, a premium fashion brand, emerged as a manifestation of our founder's unwavering principles. Infused with an innate love for streetwear, we persistently redefine the boundaries of exploration and style.
               </p>
               <p style={{ fontSize: '0.6875rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-light-secondary)', marginBottom: '1rem' }}>
                 AMHAN FASHION
@@ -25,6 +25,14 @@ export default function Footer() {
                   <FaFacebookSquare />
                 </a>
               </div>
+            </div>
+
+            <div>
+              <h3>Collections</h3>
+              <Link to="/shop?gender=men">Men</Link>
+              <Link to="/shop?gender=women">Women</Link>
+              <Link to="/shop?gender=unisex">Unisex</Link>
+              <Link to="/shop?gender=accessories">Accessories</Link>
             </div>
 
             <div>
@@ -44,16 +52,10 @@ export default function Footer() {
             </div>
 
             <div>
-              <h3>Nearby Store</h3>
-              <a href="#">Location 1</a>
-              <a href="#">Location 2</a>
-              <a href="#">Location 3</a>
-            </div>
-
-            <div>
               <h3>Orders</h3>
               <Link to="/cart">View Cart</Link>
               <Link to="/orders">Track Orders</Link>
+              <Link to="/profile">My Account</Link>
             </div>
           </div>
 
